@@ -3,7 +3,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link, Tabs } from "expo-router";
 import { Pressable } from "react-native";
 
-import Colors from "@/constants/Colors";
+import Colors, { colors } from "@/constants/Colors";
 import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
 
@@ -25,6 +25,11 @@ export default function TabLayout() {
         // Disable the static render of the header on web
         // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
+        headerTitleStyle: {
+          fontSize: 34,
+          fontFamily: "SF Pro Text",
+          color: colors.whiteBlack["100"],
+        },
       }}
     >
       <Tabs.Screen
@@ -39,6 +44,7 @@ export default function TabLayout() {
         name="saved"
         options={{
           title: "Saved",
+
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="bookmark" color={color} />
           ),

@@ -20,10 +20,12 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
     fontSize: 14,
     fontWeight: "bold",
-    fontFamily: "Zodiak",
+    fontFamily: "Inter",
+    color: colors.neutral["500"],
   },
   item: {
-    fontSize: 18,
+    fontSize: 16,
+    fontFamily: "Jakarta",
   },
   itemContainer: {
     backgroundColor: colors.neutral["50"],
