@@ -1,19 +1,86 @@
-const tintColorLight = '#2f95dc';
-const tintColorDark = '#fff';
+const tintColorLight = "#2f95dc";
+const tintColorDark = "#fff";
 
 export default {
   light: {
-    text: '#000',
-    background: '#fff',
+    text: "#000",
+    background: "#fff",
     tint: tintColorLight,
-    tabIconDefault: '#ccc',
+    tabIconDefault: "#ccc",
     tabIconSelected: tintColorLight,
   },
   dark: {
-    text: '#fff',
-    background: '#000',
+    text: "#fff",
+    background: "#000",
     tint: tintColorDark,
-    tabIconDefault: '#ccc',
+    tabIconDefault: "#ccc",
     tabIconSelected: tintColorDark,
+  },
+};
+
+export const colors = {
+  primary: {
+    50: "#E9F5E8",
+    100: "#CBE6C7",
+    200: "#AAD6A4",
+    300: "#89C780",
+    400: "#70BB65",
+    500: "#5AAF49",
+    600: "#50A041",
+    700: "#448E36",
+    800: "#3A7D2D",
+    900: "#265E1B",
+  },
+  blue: {
+    50: "#EAEFFF",
+    100: "#CBCEFF",
+    200: "#A6AEFF",
+    300: "#7D8BFF",
+    400: "#5C71FF",
+    500: "#3855FF",
+    600: "#3348F3",
+    700: "#273FE6",
+    800: "#1B33DB",
+    900: "#0015CA",
+  },
+  orange: {
+    50: "#FFEEE6",
+    100: "#FFFAC2",
+    200: "#FFF699",
+    300: "#FFF699",
+    400: "#FDEC4A",
+    500: "#FBE71E",
+    600: "#FFDC26",
+    700: "#FFC31D",
+    800: "#FFAB13",
+    900: "#FF8000",
+  },
+  red: {
+    50: "#FFEBEE",
+    100: "#FFCDD1",
+    200: "#F79997",
+    300: "#EF716E",
+    400: "#FA4E48",
+    500: "#F33C28",
+    600: "#F0302B",
+    700: "#DE2425",
+    800: "#D11B1D",
+    900: "#C3010E",
+  },
+  neutral: {
+    50: "#F7F7F7",
+    100: "#EEEEEE",
+    200: "#E3E3E3",
+    300: "#D1D1D1",
+    400: "#ACACAC",
+    500: "#8B8B8B",
+    600: "#646464",
+    700: "#515151",
+    800: "#333333",
+    900: "#131313",
+  },
+  whiteBlack: {
+    50: "#FFFFFF",
+    100: "#000000",
   },
 };

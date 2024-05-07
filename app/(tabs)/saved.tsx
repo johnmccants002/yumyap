@@ -1,5 +1,7 @@
 import React from "react";
-import { View, Text, SectionList, StyleSheet } from "react-native";
+import { View, Text, SectionList, StyleSheet, Pressable } from "react-native";
+import { colors } from "@/constants/Colors";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 interface Item {
   title: string;
@@ -10,6 +12,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 22,
+    backgroundColor: colors.whiteBlack["50"],
   },
   sectionHeader: {
     paddingTop: 2,
@@ -18,12 +21,22 @@ const styles = StyleSheet.create({
     paddingBottom: 2,
     fontSize: 14,
     fontWeight: "bold",
-    backgroundColor: "rgba(247,247,247,1.0)",
+    fontFamily: "Zodiak",
   },
   item: {
-    padding: 10,
     fontSize: 18,
-    height: 44,
+
+    alignSelf: "center",
+  },
+  itemContainer: {
+    backgroundColor: colors.neutral["50"],
+    flexDirection: "row",
+
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+
+    height: 56,
+    borderRadius: 8,
   },
 });
 
@@ -37,7 +50,16 @@ const dummyData: Item[] = [
 
 const MySectionList: React.FC = () => {
   const renderItem: React.FC<{ item: Item }> = ({ item }) => (
-    <Text style={styles.item}>{item.title}</Text>
+    <View style={styles.itemContainer}>
+      <Text style={styles.item}>{item.title}</Text>
+      <Pressable>
+        <MaterialCommunityIcons
+          name="settings-helper"
+          size={24}
+          color="black"
+        />
+      </Pressable>
+    </View>
   );
 
   const renderSectionHeader: React.FC<{ section: { title: string } }> = ({
@@ -81,6 +103,7 @@ const MySectionList: React.FC = () => {
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
         keyExtractor={(item, index) => index.toString()}
+        contentContainerStyle={{ marginHorizontal: 20, gap: 10 }}
       />
     </View>
   );
