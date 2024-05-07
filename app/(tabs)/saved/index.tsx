@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, SectionList, StyleSheet, Pressable } from "react-native";
 import { colors } from "@/constants/Colors";
 import { Entypo } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 interface Item {
   title: string;
   date: string;
@@ -47,9 +48,18 @@ const dummyData: Item[] = [
   // Add more dummy data as needed
 ];
 
-const MySectionList: React.FC = () => {
+const Index: React.FC = () => {
+  const router = useRouter();
   const renderItem: React.FC<{ item: Item }> = ({ item }) => (
-    <View style={styles.itemContainer}>
+    <Pressable
+      style={styles.itemContainer}
+      onPress={() => {
+        router.push({
+          pathname: `/(tabs)/saved/${item.title}`,
+          params: { title: item.title },
+        });
+      }}
+    >
       <Text style={styles.item}>{item.title}</Text>
       <Pressable
         style={{
@@ -63,7 +73,7 @@ const MySectionList: React.FC = () => {
           color={colors.neutral["900"]}
         />
       </Pressable>
-    </View>
+    </Pressable>
   );
 
   const renderSectionHeader: React.FC<{ section: { title: string } }> = ({
@@ -113,4 +123,4 @@ const MySectionList: React.FC = () => {
   );
 };
 
-export default MySectionList;
+export default Index;

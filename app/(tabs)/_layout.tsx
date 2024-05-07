@@ -29,7 +29,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="home"
+        name="home/index"
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerTitle: "Yumyap",
@@ -38,7 +38,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="saved"
+        name="saved/index"
         options={{
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="bookmark" color={color} />
@@ -64,6 +64,10 @@ export default function TabLayout() {
             </View>
           ),
         }}
+      />
+      <Tabs.Screen
+        name="saved/[detail]"
+        options={{ tabBarButton: () => null }}
       />
     </Tabs>
   );

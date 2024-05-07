@@ -3,7 +3,7 @@ import { StyleSheet, TextInput, useWindowDimensions } from "react-native";
 import { Text, View } from "@/components/Themed";
 import { colors } from "@/constants/Colors";
 
-export default function TabOneScreen() {
+export default function Index() {
   const { width, height } = useWindowDimensions();
   return (
     <View style={styles.container}>
