@@ -18,7 +18,7 @@ export {
 
 export const unstable_settings = {
   // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: "(auth)",
+  initialRouteName: "(tabs)",
 };
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -29,6 +29,8 @@ export default function RootLayout() {
     SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
     Zodiak: require("../assets/fonts/Zodiak-Bold.ttf"),
     Jakarta: require("../assets/fonts/PlusJakartaSans-Regular.ttf"),
+    SFProText: require("../assets/fonts/SF-Pro-Text-Semibold.otf"),
+    Inter: require("../assets/fonts/Inter-Regular.ttf"),
     ...FontAwesome.font,
   });
 
