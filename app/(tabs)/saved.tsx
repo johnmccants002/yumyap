@@ -1,8 +1,7 @@
 import React from "react";
 import { View, Text, SectionList, StyleSheet, Pressable } from "react-native";
 import { colors } from "@/constants/Colors";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-
+import { Entypo } from "@expo/vector-icons";
 interface Item {
   title: string;
   date: string;
@@ -25,17 +24,15 @@ const styles = StyleSheet.create({
   },
   item: {
     fontSize: 18,
-
-    alignSelf: "center",
   },
   itemContainer: {
     backgroundColor: colors.neutral["50"],
     flexDirection: "row",
-
+    alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 20,
+    height: 60,
 
-    height: 56,
     borderRadius: 8,
   },
 });
@@ -52,11 +49,16 @@ const MySectionList: React.FC = () => {
   const renderItem: React.FC<{ item: Item }> = ({ item }) => (
     <View style={styles.itemContainer}>
       <Text style={styles.item}>{item.title}</Text>
-      <Pressable>
-        <MaterialCommunityIcons
-          name="settings-helper"
+      <Pressable
+        style={{
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Entypo
+          name="dots-three-horizontal"
           size={24}
-          color="black"
+          color={colors.neutral["900"]}
         />
       </Pressable>
     </View>
