@@ -29,45 +29,26 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="home/index"
+        name="home"
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerTitle: "Yumyap",
           title: "Home",
-          headerTransparent: true,
-        }}
-      />
-      <Tabs.Screen
-        name="saved/index"
-        options={{
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="bookmark" color={color} />
-          ),
-          headerTitle: () => <></>,
           headerStyle: {
             elevation: 0,
             shadowOpacity: 0,
             borderBottomWidth: 0,
           },
-
-          headerLeft: () => (
-            <View style={{ marginLeft: 20 }}>
-              <Text
-                style={{
-                  fontSize: 34,
-                  fontFamily: "SFProText",
-                  color: colors.whiteBlack["100"],
-                }}
-              >
-                Saved
-              </Text>
-            </View>
-          ),
         }}
       />
       <Tabs.Screen
-        name="saved/[detail]"
-        options={{ tabBarButton: () => null }}
+        name="saved"
+        options={{
+          headerShown: false,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="bookmark" color={color} />
+          ),
+        }}
       />
     </Tabs>
   );

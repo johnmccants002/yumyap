@@ -30,7 +30,7 @@ export default function Index() {
           borderRadius: 18,
           height: 36,
           paddingLeft: 20,
-          fontFamily: "Jakarta",
+          fontFamily: "JakartaMedium",
         }}
         placeholderTextColor={colors.neutral["500"]}
       />
