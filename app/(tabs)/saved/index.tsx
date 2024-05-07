@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   },
   item: {
     fontSize: 16,
-    fontFamily: "Jakarta",
+    fontFamily: "JakartaRegular",
   },
   itemContainer: {
     backgroundColor: colors.neutral["50"],

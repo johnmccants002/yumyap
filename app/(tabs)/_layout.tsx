@@ -29,7 +29,7 @@ export default function TabLayout() {
       }}
     >
       <Tabs.Screen
-        name="home"
+        name="(home)"
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerTitle: "Yumyap",
