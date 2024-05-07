@@ -7,8 +7,12 @@ export default function TabOneScreen() {
   const { width, height } = useWindowDimensions();
   return (
     <View style={styles.container}>
-      <View style={{ gap: 16 }}>
-        <Text style={styles.title}>When Yappers Meet Food Cravings</Text>
+      <View style={{ gap: 16, marginHorizontal: 16 }}>
+        <View>
+          <Text style={styles.title}>When Yappers</Text>
+          <Text style={styles.title}>Meet Food Cravings</Text>
+        </View>
+
         <Text style={styles.subTitle}>Ask, we suggest, you cook.</Text>
       </View>
 

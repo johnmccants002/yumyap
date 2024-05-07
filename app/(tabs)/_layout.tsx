@@ -34,6 +34,7 @@ export default function TabLayout() {
           tabBarIcon: ({ color }) => <TabBarIcon name="home" color={color} />,
           headerTitle: "Yumyap",
           title: "Home",
+          headerTransparent: true,
         }}
       />
       <Tabs.Screen
@@ -43,6 +44,11 @@ export default function TabLayout() {
             <TabBarIcon name="bookmark" color={color} />
           ),
           headerTitle: () => <></>,
+          headerStyle: {
+            elevation: 0,
+            shadowOpacity: 0,
+            borderBottomWidth: 0,
+          },
 
           headerLeft: () => (
             <View style={{ marginLeft: 20 }}>
