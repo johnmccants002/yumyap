@@ -1,15 +1,9 @@
-import { StyleSheet, TextInput, useWindowDimensions } from "react-native";
+import { StyleSheet, TextInput } from "react-native";
 
 import { Text, View } from "@/components/Themed";
 import { colors } from "@/constants/Colors";
-import { useEffect } from "react";
-import { Redirect, useRouter } from "expo-router";
-import useAuth from "@/components/hooks/useAuth";
 
 export default function Index() {
-  const { width, height } = useWindowDimensions();
-  const router = useRouter();
-
   return (
     <>
       <View style={styles.container}>

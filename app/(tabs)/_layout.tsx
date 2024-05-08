@@ -1,13 +1,10 @@
-import React, { useEffect } from "react";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { Link, Tabs, useRouter } from "expo-router";
-import { Pressable } from "react-native";
+import { Tabs } from "expo-router";
+import React from "react";
 
-import Colors, { colors } from "@/constants/Colors";
-import { useColorScheme } from "@/components/useColorScheme";
 import { useClientOnlyValue } from "@/components/useClientOnlyValue";
-import { View, Text } from "react-native";
-import useAuth from "@/components/hooks/useAuth";
+import { useColorScheme } from "@/components/useColorScheme";
+import Colors from "@/constants/Colors";
 
 // You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
 function TabBarIcon(props: {
