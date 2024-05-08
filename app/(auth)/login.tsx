@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Text,
   View,
@@ -10,14 +10,22 @@ import {
 } from "react-native";
 import { colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
-import useAuth from "@/components/hooks/useAuth";
 
 type Props = {};
 
 const Page = (props: Props) => {
-  const { height, width } = useWindowDimensions();
-  const { login } = useAuth();
+  const { width } = useWindowDimensions();
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const loginPressed = () => {
+    setLoading(true);
+
+    // Call login function from authService.ts then setLoading to false
+  };
+
   return (
     <View style={styles.container}>
       <Image
@@ -51,6 +59,8 @@ const Page = (props: Props) => {
               style={styles.input}
               placeholder="Enter email..."
               placeholderTextColor={colors.neutral["300"]}
+              value={email}
+              onChangeText={(text) => setEmail(text)}
             />
           </View>
           <View>
@@ -59,11 +69,13 @@ const Page = (props: Props) => {
               style={styles.input}
               placeholder="Enter password..."
               placeholderTextColor={colors.neutral["300"]}
+              value={password}
+              onChangeText={(text) => setPassword(text)}
             />
           </View>
         </View>
         <View style={{ width: "100%", alignItems: "center" }}>
-          <Pressable style={styles.button}>
+          <Pressable style={styles.button} onPress={loginPressed}>
             <Text style={styles.buttonText}>Login</Text>
           </Pressable>
           <Pressable
