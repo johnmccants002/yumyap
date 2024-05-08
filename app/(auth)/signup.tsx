@@ -58,6 +58,8 @@ const Page = (props: Props) => {
             style={styles.input}
             placeholder="Enter email..."
             placeholderTextColor={colors.neutral["300"]}
+            value={email}
+            onChangeText={(text) => setEmail(text)}
           />
         </View>
         <View style={{ gap: 12 }}>
@@ -68,6 +70,8 @@ const Page = (props: Props) => {
             style={styles.input}
             placeholder="Enter password..."
             placeholderTextColor={colors.neutral["300"]}
+            value={password}
+            onChangeText={(text) => setPassword(text)}
           />
         </View>
       </View>
