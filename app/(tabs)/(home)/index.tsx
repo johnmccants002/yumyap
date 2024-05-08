@@ -4,11 +4,12 @@ import { Text, View } from "@/components/Themed";
 import { colors } from "@/constants/Colors";
 import { useEffect } from "react";
 import { Redirect, useRouter } from "expo-router";
+import { useAuth } from "@/components/providers/AuthProvider";
 
 export default function Index() {
   const { width, height } = useWindowDimensions();
   const router = useRouter();
-  const user = false;
+  const { user } = useAuth();
   useEffect(() => {
     if (!user) {
       // router.replace("/(auth)/onboarding");
