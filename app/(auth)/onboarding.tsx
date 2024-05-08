@@ -144,6 +144,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     fontFamily: "Zodiak",
     marginHorizontal: 20,
+    maxWidth: 300,
   },
   description: {
     fontSize: 16,
