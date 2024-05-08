@@ -10,11 +10,13 @@ import {
 } from "react-native";
 import { colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
+import useAuth from "@/components/hooks/useAuth";
 
 type Props = {};
 
 const Page = (props: Props) => {
   const { height, width } = useWindowDimensions();
+  const { login } = useAuth();
   const router = useRouter();
   return (
     <View style={styles.container}>

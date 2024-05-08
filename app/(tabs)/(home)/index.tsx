@@ -4,51 +4,42 @@ import { Text, View } from "@/components/Themed";
 import { colors } from "@/constants/Colors";
 import { useEffect } from "react";
 import { Redirect, useRouter } from "expo-router";
-import { useAuth } from "@/components/providers/AuthProvider";
+import useAuth from "@/components/hooks/useAuth";
 
 export default function Index() {
   const { width, height } = useWindowDimensions();
   const router = useRouter();
-  const { user } = useAuth();
-  useEffect(() => {
-    if (!user) {
-      // router.replace("/(auth)/onboarding");
-    }
-  }, []);
+
   return (
     <>
-      {!user ? (
-        <Redirect href={"/(auth)/onboarding"} />
-      ) : (
-        <View style={styles.container}>
-          <View style={{ gap: 16, marginHorizontal: 16 }}>
-            <View>
-              <Text style={styles.title}>When Yappers</Text>
-              <Text style={styles.title}>Meet Food Cravings</Text>
-            </View>
-
-            <Text style={styles.subTitle}>Ask, we suggest, you cook.</Text>
+      <View style={styles.container}>
+        <View style={{ gap: 16, marginHorizontal: 16 }}>
+          <View>
+            <Text style={styles.title}>When Yappers</Text>
+            <Text style={styles.title}>Meet Food Cravings</Text>
           </View>
 
-          <TextInput
-            placeholder="What's your craving..."
-            style={{
-              backgroundColor: colors.neutral["50"],
-              padding: 14,
-              alignSelf: "center",
-              position: "absolute",
-              bottom: 40,
-              left: 20,
-              right: 20,
-              borderRadius: 18,
-              height: 36,
-              paddingLeft: 20,
-              fontFamily: "JakartaMedium",
-            }}
-            placeholderTextColor={colors.neutral["500"]}
-          />
+          <Text style={styles.subTitle}>Ask, we suggest, you cook.</Text>
         </View>
-      )}
+
+        <TextInput
+          placeholder="What's your craving..."
+          style={{
+            backgroundColor: colors.neutral["50"],
+            padding: 14,
+            alignSelf: "center",
+            position: "absolute",
+            bottom: 40,
+            left: 20,
+            right: 20,
+            borderRadius: 18,
+            height: 36,
+            paddingLeft: 20,
+            fontFamily: "JakartaMedium",
+          }}
+          placeholderTextColor={colors.neutral["500"]}
+        />
+      </View>
     </>
   );
 }

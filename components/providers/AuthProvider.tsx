@@ -16,6 +16,7 @@ interface AuthContextType {
   signout: () => void;
   getToken: () => Promise<string | null>;
   setToken: (token: string) => void;
+  loaded: boolean;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -32,13 +33,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const segments = useSegments();
 
-  const login = async (username: string, password: string) => {
+  const login = async (email: string, password: string) => {
     // Here you should integrate your backend authentication logic
     // For example, using fetch or axios to post credentials and receive a token
-    console.log("Login logic here", username, password);
+    console.log("Login logic here", email, password);
     // Dummy token for example
     const dummyToken = "123456";
-    setUser({ username });
+    setUser({ email });
     setToken(dummyToken);
   };
 
@@ -50,6 +51,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const getToken = async () => {
     const token = await SecureStore.getItemAsync("token");
+
+    setToken(token);
+    setLoaded(true);
 
     return token;
   };
@@ -66,7 +70,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, token, login, signout, getToken, setToken }}
+      value={{ user, token, login, signout, getToken, setToken, loaded }}
     >
       {children}
     </AuthContext.Provider>
