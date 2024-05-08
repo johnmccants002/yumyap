@@ -33,6 +33,7 @@ export default function RootLayout() {
     SFProTextSemibold: require("../assets/fonts/SF-Pro-Text-Semibold.otf"),
     SFProTextRegular: require("../assets/fonts/SF-Pro-Text-Regular.otf"),
     Inter: require("../assets/fonts/Inter-Regular.ttf"),
+    InterSemibold: require("../assets/fonts/Inter-SemiBold.ttf"),
     ...FontAwesome.font,
   });
 
@@ -62,6 +63,7 @@ function RootLayoutNav() {
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
       </Stack>
     </ThemeProvider>
   );
