@@ -1,7 +1,7 @@
 // src/services/authService.ts
 import axios from "axios";
 
-const API_URL = "http://your-api-url.com/api";
+const API_URL = "https://yumyap-7d40e95bc185.herokuapp.com";
 
 interface LoginCredentials {
   email: string;
@@ -16,7 +16,7 @@ interface SignUpData {
 
 export const login = async (credentials: LoginCredentials): Promise<string> => {
   try {
-    const response = await axios.post(`${API_URL}/login`, credentials);
+    const response = await axios.post(`${API_URL}/auth/login`, credentials);
     return response.data.token; // Adjust based on how your API responds
   } catch (error) {
     throw new Error("Failed to login");
@@ -25,7 +25,7 @@ export const login = async (credentials: LoginCredentials): Promise<string> => {
 
 export const signUp = async (data: SignUpData): Promise<string> => {
   try {
-    const response = await axios.post(`${API_URL}/signup`, data);
+    const response = await axios.post(`${API_URL}/auth/register`, data);
     return response.data.token; // Adjust based on how your API responds
   } catch (error) {
     throw new Error("Failed to sign up");
