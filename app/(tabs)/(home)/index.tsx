@@ -1,9 +1,29 @@
-import { StyleSheet, TextInput } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, TextInput, Keyboard, Pressable } from "react-native"; // Import Keyboard module
 
 import { Text, View } from "@/components/Themed";
 import { colors } from "@/constants/Colors";
+import { getRecipe } from "@/services/recipeService";
 
 export default function Index() {
+  const [chat, setChat] = useState("");
+
+  const onChange = (text: any) => {
+    setChat(text.nativeEvent.text);
+  };
+
+  const onSubmitEditing = () => {
+    console.log("Chat submitted:", chat);
+    Keyboard.dismiss();
+  };
+
+  const handleClick = async () => {
+    console.log("clicked");
+    setChat("");
+    const result = await getRecipe(chat);
+    console.log(result);
+  };
+
   return (
     <>
       <View style={styles.container}>
@@ -32,7 +52,13 @@ export default function Index() {
             fontFamily: "JakartaMedium",
           }}
           placeholderTextColor={colors.neutral["500"]}
+          value={chat}
+          onChange={(text) => onChange(text)}
+          onSubmitEditing={onSubmitEditing}
         />
+        <Pressable style={{ height: 30, width: 60 }} onPress={handleClick}>
+          <Text>Generate</Text>
+        </Pressable>
       </View>
     </>
   );
