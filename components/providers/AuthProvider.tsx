@@ -38,6 +38,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const decode = (token: string) => {
     const result = jwtDecode(token);
     console.log(result);
+    setUser(result);
     return result;
   };
 

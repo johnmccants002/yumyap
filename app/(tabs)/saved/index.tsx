@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { View, Text, SectionList, StyleSheet, Pressable } from "react-native";
 import { colors } from "@/constants/Colors";
 import { Entypo } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { getSavedRecipes } from "@/services/recipeService";
+import useAuth from "@/components/hooks/useAuth";
 interface Item {
   title: string;
   date: string;
@@ -49,7 +51,18 @@ const dummyData: Item[] = [
 ];
 
 const Index: React.FC = () => {
+  const { user } = useAuth();
   const router = useRouter();
+  console.log(user);
+  const getSaved = async () => {
+    const result = await getSavedRecipes(user.user.id);
+    console.log(result);
+  };
+
+  useEffect(() => {
+    getSaved();
+  }, []);
+
   const renderItem: React.FC<{ item: Item }> = ({ item }) => (
     <Pressable
       style={styles.itemContainer}

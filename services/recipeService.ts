@@ -15,8 +15,9 @@ export const getRecipe = async (text: string): Promise<any> => {
 };
 
 export const getSavedRecipes = async (id: any): Promise<any> => {
+  console.log(id);
   try {
-    const response = await axios.get(`${API_URL}/meal/get${id}`);
+    const response = await axios.get(`${API_URL}/meal/get/${id}`);
     return response.data;
   } catch (error) {
     console.error("Error fetching saved recipes:", error);

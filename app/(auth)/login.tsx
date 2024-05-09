@@ -31,6 +31,7 @@ const Page = (props: Props) => {
     };
     const result = await login(credentials);
     decode(result);
+    router.replace("/");
   };
 
   return (
