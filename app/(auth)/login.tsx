@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import { colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
+import { login } from "@/services/authService";
+import useAuth from "@/components/hooks/useAuth";
 
 type Props = {};
 
@@ -19,11 +21,17 @@ const Page = (props: Props) => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { saveToken, decode } = useAuth();
 
-  const loginPressed = () => {
+  const loginPressed = async () => {
     setLoading(true);
-
-    // Call login function from authService.ts then setLoading to false
+    const credentials = {
+      email,
+      password,
+    };
+    const result = await login(credentials);
+    decode(result);
+    router.replace("/");
   };
 
   return (

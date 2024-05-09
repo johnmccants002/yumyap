@@ -7,16 +7,18 @@ import React, {
   ReactNode,
   useEffect,
 } from "react";
-import * as SecureStore from "expo-secure-store";
+// import * as SecureStore from "expo-secure-store";
+import { jwtDecode } from "jwt-decode";
 
 interface AuthContextType {
   user: any; // Adjust the type according to your user model
   token: string | null;
-  login: (username: string, password: string) => void;
   signout: () => void;
   getToken: () => Promise<string | null>;
   setToken: (token: string) => void;
   loaded: boolean;
+  decode: (token: string) => void;
+  saveToken: () => void;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -33,14 +35,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loaded, setLoaded] = useState<boolean>(false);
   const segments = useSegments();
 
-  const login = async (email: string, password: string) => {
-    // Here you should integrate your backend authentication logic
-    // For example, using fetch or axios to post credentials and receive a token
-    console.log("Login logic here", email, password);
-    // Dummy token for example
-    const dummyToken = "123456";
-    setUser({ email });
-    setToken(dummyToken);
+  const decode = (token: string) => {
+    const result = jwtDecode(token);
+    console.log(result);
+    setUser(result);
+    return result;
   };
 
   const signout = () => {
@@ -50,7 +49,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   const getToken = async () => {
-    const token = await SecureStore.getItemAsync("token");
+    // const token = await SecureStore.getItemAsync("token");
 
     setToken(token);
     setLoaded(true);
@@ -59,7 +58,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
   const saveToken = async () => {
     if (token) {
-      await SecureStore.setItemAsync("token", token);
+      // await SecureStore.setItemAsync("token", token);
     }
   };
   useEffect(() => {
@@ -70,7 +69,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user, token, login, signout, getToken, setToken, loaded }}
+      value={{
+        user,
+        token,
+        signout,
+        getToken,
+        setToken,
+        loaded,
+        decode,
+        saveToken,
+      }}
     >
       {children}
     </AuthContext.Provider>

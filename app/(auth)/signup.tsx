@@ -10,7 +10,8 @@ import {
   Pressable,
 } from "react-native";
 import { colors } from "@/constants/Colors";
-
+import { signUp } from "@/services/authService";
+import useAuth from "@/components/hooks/useAuth";
 type Props = {};
 
 const Page = (props: Props) => {
@@ -18,6 +19,7 @@ const Page = (props: Props) => {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const { setToken, decode } = useAuth();
   const { width } = useWindowDimensions();
 
   const validateEmail = (email: string) => {
@@ -25,7 +27,7 @@ const Page = (props: Props) => {
     return emailRegex.test(email);
   };
 
-  const handleSignup = () => {
+  const handleSignup = async () => {
     if (!validateEmail(email)) {
       setErrorMessage("Please enter a valid email address.");
       return;
@@ -35,7 +37,14 @@ const Page = (props: Props) => {
       return;
     }
     setIsLoading(true);
-    // Simulate an API call
+    const credentials = {
+      email,
+      password,
+    };
+    const result = await signUp(credentials);
+    setToken(result);
+    decode(result);
+
     setTimeout(() => {
       setIsLoading(false);
       // Here, you can integrate with your actual signup API.
