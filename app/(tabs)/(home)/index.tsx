@@ -1,12 +1,24 @@
 import React, { useState } from "react";
-import { StyleSheet, TextInput, Keyboard, Pressable } from "react-native"; // Import Keyboard module
+import {
+  StyleSheet,
+  TextInput,
+  Keyboard,
+  Pressable,
+  Modal,
+  ActivityIndicator,
+} from "react-native"; // Import Keyboard module
 
 import { Text, View } from "@/components/Themed";
 import { colors } from "@/constants/Colors";
 import { getRecipe } from "@/services/recipeService";
+import ResultDisplay from "@/components/ResultDisplay";
+import { Recipe } from "@/types";
 
 export default function Index() {
   const [chat, setChat] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [showResult, setShowResult] = useState(false);
+  const [result, setResult] = useState<Recipe | null>(null);
 
   const onChange = (text: any) => {
     setChat(text.nativeEvent.text);
@@ -19,21 +31,56 @@ export default function Index() {
 
   const handleClick = async () => {
     console.log("clicked");
+    setLoading(true);
     setChat("");
-    const result = await getRecipe(chat);
-    console.log(result);
+
+    try {
+      const result = await getRecipe(chat);
+      console.log(JSON.stringify(result));
+      setResult(result);
+      setShowResult(true);
+    } catch {
+      console.log("Error getting result");
+    } finally {
+      setLoading(false);
+    }
   };
+
+  const dismissModal = () => {
+    console.log("DISMISS MODAL BEING CALLED");
+    setResult(null);
+
+    setShowResult(false);
+  };
+
+  const saveRecipe = () => {};
 
   return (
     <>
+      <Modal
+        visible={showResult}
+        animationType="slide"
+        presentationStyle="fullScreen"
+      >
+        <ResultDisplay recipe={result} dismiss={dismissModal} />
+      </Modal>
       <View style={styles.container}>
         <View style={{ gap: 16, marginHorizontal: 16 }}>
-          <View>
-            <Text style={styles.title}>When Yappers</Text>
-            <Text style={styles.title}>Meet Food Cravings</Text>
-          </View>
+          {loading ? (
+            <View style={{ gap: 20 }}>
+              <ActivityIndicator size="large" color="#00ff00" />
+              <Text style={styles.subTitle}>Generating Recipe</Text>
+            </View>
+          ) : (
+            <>
+              <View>
+                <Text style={styles.title}>When Yappers</Text>
+                <Text style={styles.title}>Meet Food Cravings</Text>
+              </View>
 
-          <Text style={styles.subTitle}>Ask, we suggest, you cook.</Text>
+              <Text style={styles.subTitle}>Ask, we suggest, you cook.</Text>
+            </>
+          )}
         </View>
 
         <TextInput

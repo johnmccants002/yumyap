@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Recipe } from "@/types";
 
 const API_URL = "https://yumyap-7d40e95bc185.herokuapp.com";
 
@@ -14,7 +15,7 @@ export const getRecipe = async (text: string): Promise<any> => {
   }
 };
 
-export const getSavedRecipes = async (id: any): Promise<any> => {
+export const getSavedRecipes = async (id: any): Promise<Recipe> => {
   console.log(id);
   try {
     const response = await axios.get(`${API_URL}/meal/get/${id}`);
