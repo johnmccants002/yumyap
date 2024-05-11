@@ -8,6 +8,7 @@ import {
   ActivityIndicator,
   useWindowDimensions,
   Pressable,
+  Alert,
 } from "react-native";
 import { colors } from "@/constants/Colors";
 import { signUp } from "@/services/authService";
@@ -41,9 +42,15 @@ const Page = (props: Props) => {
       email,
       password,
     };
-    const result = await signUp(credentials);
-    setToken(result);
-    decode(result);
+
+    try {
+      const result = await signUp(credentials);
+      setToken(result);
+      // decode(result);
+    } catch (err) {
+      Alert.alert(`${err}`);
+      throw err;
+    }
 
     setTimeout(() => {
       setIsLoading(false);

@@ -9,7 +9,8 @@ import React, {
 } from "react";
 // import * as SecureStore from "expo-secure-store";
 import { jwtDecode } from "jwt-decode";
-
+import { decode as decodeToken } from "base-64";
+global.atob = decodeToken;
 interface AuthContextType {
   user: any; // Adjust the type according to your user model
   token: string | null;
@@ -36,10 +37,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const segments = useSegments();
 
   const decode = (token: string) => {
-    const result = jwtDecode(token);
-    console.log(result);
-    setUser(result);
-    return result;
+    setLoaded(false);
+    try {
+      const result = JSON.parse(atob(token.split(".")[1]));
+
+      console.log(result);
+      setToken(token);
+      setUser(result);
+      return result;
+    } catch (e) {
+      console.log(e);
+      throw e;
+    }
   };
 
   const signout = () => {

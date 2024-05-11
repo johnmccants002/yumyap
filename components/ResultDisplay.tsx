@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import { Recipe } from "@/types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { saveRecipe } from "@/services/recipeService";
+import useAuth from "./hooks/useAuth";
 
 const recipeData = {
   name: "Spaghetti all'arrabbiata",
@@ -44,6 +46,11 @@ const ResultDisplay = (props: {
   dismiss: () => void;
 }) => {
   const { recipe, dismiss } = props;
+  const { user } = useAuth();
+
+  const saveUserRecipe = async () => {
+    // const args = {recipe: recipe, userId: }
+  };
   if (!recipe) return <></>;
   return (
     <>

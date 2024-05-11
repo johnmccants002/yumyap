@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -7,6 +7,7 @@ import {
   TextInput,
   useWindowDimensions,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
@@ -29,9 +30,17 @@ const Page = (props: Props) => {
       email,
       password,
     };
-    const result = await login(credentials);
-    decode(result);
-    router.replace("/");
+    console.log(email, password);
+
+    try {
+      const result = await login(credentials);
+      decode(result);
+      router.replace("/");
+    } catch (err) {
+      console.log("Error Logging in ", err);
+      Alert.alert(`Error Logging in, ${err}`);
+      throw err;
+    }
   };
 
   return (

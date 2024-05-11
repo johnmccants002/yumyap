@@ -1,5 +1,10 @@
 import axios from "axios";
-import { Recipe } from "@/types";
+import { Recipe, SaveRecipeResponse } from "@/types";
+
+interface SaveRecipeArg {
+  recipe: Recipe;
+  userId: number;
+}
 
 const API_URL = "https://yumyap-7d40e95bc185.herokuapp.com";
 
@@ -23,5 +28,17 @@ export const getSavedRecipes = async (id: any): Promise<Recipe> => {
   } catch (error) {
     console.error("Error fetching saved recipes:", error);
     throw error;
+  }
+};
+
+export const saveRecipe = async (
+  arg: SaveRecipeArg
+): Promise<SaveRecipeResponse> => {
+  try {
+    const response = await axios.post(`${API_URL}/meal/saveMeal/${arg.userId}`);
+    return response.data;
+  } catch (err) {
+    console.log("Error saving recipe", err);
+    throw err;
   }
 };
