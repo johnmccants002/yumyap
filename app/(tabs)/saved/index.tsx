@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, SectionList, StyleSheet, Pressable } from "react-native";
+import {
+  View,
+  Text,
+  SectionList,
+  StyleSheet,
+  Pressable,
+  ActivityIndicator,
+} from "react-native";
 import { colors } from "@/constants/Colors";
 import { Entypo } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { getSavedRecipes } from "@/services/recipeService";
 import useAuth from "@/components/hooks/useAuth";
-import { SavedMealsResponse } from "@/types";
+import { SavedMealsObject, SavedMealsResponse } from "@/types";
 interface Item {
   title: string;
   date: string;
@@ -53,14 +60,19 @@ const dummyData: Item[] = [
 
 const Index: React.FC = () => {
   const { user, token } = useAuth();
-  const [recipes, setRecipes] = useState(null);
+  const [recipes, setRecipes] = useState<SavedMealsObject[] | null>(null);
   const router = useRouter();
+  const [loading, setLoading] = useState(true); // State to track loading status
 
   const getSaved = async () => {
-    if (!token || !user.user.id) return;
+    if (!token || !user.user.id) {
+      setLoading(false);
+      return;
+    }
     const args = { userId: user.user.id, token: token };
     const result = await getSavedRecipes(args);
     setRecipes(result);
+    setLoading(false); // Set loading to false once data is fetched
   };
 
   useEffect(() => {
@@ -94,7 +106,23 @@ const Index: React.FC = () => {
     <Text style={styles.sectionHeader}>{title}</Text>
   );
 
-  const sectionData = recipes?.reduce((acc, curr) => {
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <ActivityIndicator size="large" color="#0000ff" />
+      </View>
+    );
+  }
+
+  if (!recipes || recipes.length === 0) {
+    return (
+      <View style={styles.container}>
+        <Text>No recipes found.</Text>
+      </View>
+    );
+  }
+
+  const sectionData = recipes.reduce((acc, curr) => {
     const date = new Date(curr.createdAt);
     const today = new Date();
     const yesterday = new Date(today);
