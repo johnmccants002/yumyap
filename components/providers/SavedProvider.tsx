@@ -36,6 +36,7 @@ interface SavedMealsContextType {
   isLoading: boolean;
   error: string | null;
   refreshMeals: () => void;
+  getMealById: (id: string) => SavedMealsObject | null;
 }
 
 // Creating the context with default values
@@ -44,6 +45,7 @@ const SavedMealsContext = createContext<SavedMealsContextType>({
   isLoading: false,
   error: null,
   refreshMeals: () => {},
+  getMealById: () => null,
 });
 
 // Custom hook to use the SavedMealsContext
@@ -82,13 +84,16 @@ export const SavedProvider: React.FC<SavedProviderProps> = ({ children }) => {
     getSavedMeals();
   };
 
+  const getMealById = (id: string) => {
+    return savedMeals.find((meal) => meal._id === id);
+  };
   useEffect(() => {
     getSavedMeals();
   }, []);
 
   return (
     <SavedMealsContext.Provider
-      value={{ savedMeals, isLoading, error, refreshMeals }}
+      value={{ savedMeals, isLoading, error, refreshMeals, getMealById }}
     >
       {children}
     </SavedMealsContext.Provider>

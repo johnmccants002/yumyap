@@ -68,7 +68,7 @@ const Index: React.FC = () => {
     <Pressable
       style={styles.itemContainer}
       onPress={() => {
-        router.push(`/(tabs)/saved/${item.name}`);
+        router.push(`/(tabs)/saved/${item.id}`);
       }}
     >
       <Text style={styles.item}>{item.name}</Text>

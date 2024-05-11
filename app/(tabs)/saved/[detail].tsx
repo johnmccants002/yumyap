@@ -3,6 +3,7 @@ import { View, Text, Image, ScrollView, StyleSheet } from "react-native";
 import { FontAwesome, AntDesign } from "@expo/vector-icons";
 import { colors } from "@/constants/Colors";
 import { Stack, useLocalSearchParams } from "expo-router";
+import { useSavedMeals } from "@/components/providers/SavedProvider";
 
 type Props = {};
 
@@ -77,9 +78,14 @@ const recipeData = {
 
 const Page = (props: Props) => {
   const params = useLocalSearchParams();
+  const { savedMeals, getMealById } = useSavedMeals();
+
+  const meal = getMealById(`${params.detail}`)?.meal;
+  console.log("THIS IS THE MEAL", meal);
+
   return (
     <>
-      <Stack.Screen options={{ title: `${params.title}` }} />
+      <Stack.Screen options={{ title: `${meal?.name}` }} />
       <ScrollView
         style={styles.container}
         contentContainerStyle={{ paddingBottom: 80 }}
@@ -88,9 +94,9 @@ const Page = (props: Props) => {
           source={require("@/assets/images/food.png")}
           style={styles.image}
         />
-        <Text style={styles.header}>{recipeData.title}</Text>
+        <Text style={styles.header}>{meal?.name}</Text>
         <View style={styles.subHeader}>
-          <Text style={styles.cuisine}>{recipeData.cuisine}</Text>
+          <Text style={styles.cuisine}>{meal?.cuisine}</Text>
           <View style={styles.rating}>
             <Text style={styles.cuisine}>{recipeData.rating}</Text>
             <FontAwesome name="star" size={24} color={colors.orange["700"]} />
@@ -104,45 +110,31 @@ const Page = (props: Props) => {
               fontSize: 13,
             }}
           >
-            {recipeData.preparationTime}
+            {meal?.cookTime}
           </Text>
         </View>
-        <Text style={styles.description}>
-          To prepare "Pancetta Paradiso" (Spaghetti Carbonara), follow these
-          step-by-step instructions:
-        </Text>
-        {recipeData.steps.map((step, index) => (
-          <View key={index} style={styles.stepContainer}>
-            <View style={styles.stepHeader}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  gap: 8,
-                  alignItems: "center",
-                  backgroundColor: colors.blue["100"],
-                  padding: 8,
-                  borderRadius: "50%",
-                  paddingHorizontal: 12,
-                }}
-              >
-                <Text
-                  style={{
-                    color: colors.neutral["900"],
-                    fontFamily: "SFProTextRegular",
-                    fontSize: 14,
-                  }}
-                >{`${index + 1}. ${step.title}`}</Text>
-                <FontAwesome name="caret-down" size={18} color="black" />
-              </View>
-              <AntDesign name="checkcircleo" size={24} color="black" />
-            </View>
-            {step.content.map((item, idx) => (
+        <Text>Ingredients</Text>
+        {Object.entries(meal?.ingredients).map(
+          ([stepNumber, stepDescription], idx) => (
+            <View key={idx} style={styles.stepContainer}>
               <Text key={idx} style={styles.stepContent}>
-                {"\u2B22"} {item}
+                {stepDescription}
               </Text>
-            ))}
-          </View>
-        ))}
+            </View>
+          )
+        )}
+        <Text style={styles.description}>
+          {`To prepare ${meal?.name} follow these step-by-step instructions:`}
+        </Text>
+        {Object.entries(meal.steps).map(
+          ([stepNumber, stepDescription], idx) => (
+            <View key={idx} style={styles.stepContainer}>
+              <Text key={idx} style={styles.stepContent}>
+                {stepNumber}. {stepDescription}
+              </Text>
+            </View>
+          )
+        )}
       </ScrollView>
     </>
   );
