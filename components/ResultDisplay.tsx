@@ -1,5 +1,5 @@
 import { colors } from "@/constants/Colors";
-import React from "react";
+import React, { useState } from "react";
 import {
   Image,
   Pressable,
@@ -46,10 +46,18 @@ const ResultDisplay = (props: {
   dismiss: () => void;
 }) => {
   const { recipe, dismiss } = props;
-  const { user } = useAuth();
+  const { user, token } = useAuth();
+  const [saved, setSaved] = useState(false);
 
   const saveUserRecipe = async () => {
-    // const args = {recipe: recipe, userId: }
+    if (!recipe || !token) return;
+    const args = { recipe: recipe, userId: user.user.id, token: token };
+    try {
+      await saveRecipe(args);
+      setSaved(true);
+    } catch (err) {
+      console.log("Unable to save the recipe", err);
+    }
   };
   if (!recipe) return <></>;
   return (
@@ -76,7 +84,7 @@ const ResultDisplay = (props: {
           </Pressable>
           <Pressable
             onPress={() => {
-              console.log("Saving recipe");
+              saveUserRecipe();
             }}
             style={{
               position: "relative",
@@ -87,7 +95,7 @@ const ResultDisplay = (props: {
           >
             <Text>Save Recipe</Text>
             <MaterialCommunityIcons
-              name="bookmark-outline"
+              name={saved ? "bookmark" : "bookmark-outline"}
               color={"black"}
               size={24}
             />
@@ -106,8 +114,7 @@ const ResultDisplay = (props: {
           </View>
         </View>
         <Text style={styles.description}>
-          Follow these step-by-step instructions to prepare this delicious
-          Italian dish:
+          Follow these step-by-step instructions to prepare this delicious dish:
         </Text>
         {Object.entries(recipe.steps).map(([index, step], idx) => (
           <View key={idx} style={styles.stepContainer}>

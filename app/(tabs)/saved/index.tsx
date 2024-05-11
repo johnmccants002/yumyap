@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, SectionList, StyleSheet, Pressable } from "react-native";
 import { colors } from "@/constants/Colors";
 import { Entypo } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import { getSavedRecipes } from "@/services/recipeService";
 import useAuth from "@/components/hooks/useAuth";
+import { SavedMealsResponse } from "@/types";
 interface Item {
   title: string;
   date: string;
@@ -51,29 +52,29 @@ const dummyData: Item[] = [
 ];
 
 const Index: React.FC = () => {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
+  const [recipes, setRecipes] = useState(null);
   const router = useRouter();
-  console.log(user);
+
   const getSaved = async () => {
-    const result = await getSavedRecipes(user.user.id);
-    console.log(result);
+    if (!token || !user.user.id) return;
+    const args = { userId: user.user.id, token: token };
+    const result = await getSavedRecipes(args);
+    setRecipes(result);
   };
 
   useEffect(() => {
     getSaved();
   }, []);
 
-  const renderItem: React.FC<{ item: Item }> = ({ item }) => (
+  const renderItem = ({ item }) => (
     <Pressable
       style={styles.itemContainer}
       onPress={() => {
-        router.push({
-          pathname: `/(tabs)/saved/${item.title}`,
-          params: { title: item.title },
-        });
+        router.push(`/(tabs)/saved/${item.name}`);
       }}
     >
-      <Text style={styles.item}>{item.title}</Text>
+      <Text style={styles.item}>{item.name}</Text>
       <Pressable
         style={{
           justifyContent: "center",
@@ -89,34 +90,34 @@ const Index: React.FC = () => {
     </Pressable>
   );
 
-  const renderSectionHeader: React.FC<{ section: { title: string } }> = ({
-    section: { title },
-  }) => <Text style={styles.sectionHeader}>{title}</Text>;
-
-  const sectionData: { [key: string]: Item[] } = dummyData.reduce(
-    (acc, curr) => {
-      const date = new Date(curr.date);
-      const today = new Date();
-      const yesterday = new Date(today);
-      yesterday.setDate(today.getDate() - 1);
-
-      let sectionTitle = "";
-      if (date.toDateString() === today.toDateString()) {
-        sectionTitle = "Today";
-      } else if (date.toDateString() === yesterday.toDateString()) {
-        sectionTitle = "Yesterday";
-      } else {
-        sectionTitle = date.toLocaleDateString();
-      }
-
-      if (!acc[sectionTitle]) {
-        acc[sectionTitle] = [];
-      }
-      acc[sectionTitle].push(curr);
-      return acc;
-    },
-    {}
+  const renderSectionHeader = ({ section: { title } }) => (
+    <Text style={styles.sectionHeader}>{title}</Text>
   );
+
+  const sectionData = recipes?.reduce((acc, curr) => {
+    const date = new Date(curr.createdAt);
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    let sectionTitle;
+    if (date.toDateString() === today.toDateString()) {
+      sectionTitle = "Today";
+    } else if (date.toDateString() === yesterday.toDateString()) {
+      sectionTitle = "Yesterday";
+    } else {
+      sectionTitle = date.toLocaleDateString();
+    }
+
+    if (!acc[sectionTitle]) {
+      acc[sectionTitle] = [];
+    }
+    acc[sectionTitle].push({
+      id: curr._id,
+      name: curr.meal.name,
+    });
+    return acc;
+  }, {});
 
   const sections = Object.keys(sectionData).map((key) => ({
     title: key,
@@ -129,7 +130,7 @@ const Index: React.FC = () => {
         sections={sections}
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item, index) => item.id.toString()}
         contentContainerStyle={{ marginHorizontal: 20, gap: 10 }}
       />
     </View>

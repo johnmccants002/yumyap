@@ -1,8 +1,14 @@
 import axios from "axios";
-import { Recipe, SaveRecipeResponse } from "@/types";
+import { Recipe, SaveRecipeResponse, SavedMealsResponse } from "@/types";
 
 interface SaveRecipeArg {
   recipe: Recipe;
+  userId: number;
+  token: string;
+}
+
+interface GetSavedRecipeArgs {
+  token: string;
   userId: number;
 }
 
@@ -20,10 +26,17 @@ export const getRecipe = async (text: string): Promise<any> => {
   }
 };
 
-export const getSavedRecipes = async (id: any): Promise<Recipe> => {
-  console.log(id);
+export const getSavedRecipes = async (
+  args: GetSavedRecipeArgs
+): Promise<SavedMealsResponse> => {
+  console.log(JSON.stringify(args), "THESE ARE THE ARGS");
   try {
-    const response = await axios.get(`${API_URL}/meal/get/${id}`);
+    const response = await axios.get(`${API_URL}/meal/get/${args.userId}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${args.token}`,
+      },
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching saved recipes:", error);
@@ -35,7 +48,16 @@ export const saveRecipe = async (
   arg: SaveRecipeArg
 ): Promise<SaveRecipeResponse> => {
   try {
-    const response = await axios.post(`${API_URL}/meal/saveMeal/${arg.userId}`);
+    const response = await axios.post(
+      `${API_URL}/meal/saveMeal/${arg.userId}`,
+      JSON.stringify(arg.recipe), // This is the body of the request.
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${arg.token}`,
+        },
+      }
+    );
     return response.data;
   } catch (err) {
     console.log("Error saving recipe", err);

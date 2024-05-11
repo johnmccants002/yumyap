@@ -1,16 +1,9 @@
 // src/context/AuthContext.tsx
 import { useSegments } from "expo-router";
-import React, {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  useEffect,
-} from "react";
+import React, { ReactNode, createContext, useEffect, useState } from "react";
+import { TokenPayload } from "@/types";
 // import * as SecureStore from "expo-secure-store";
-import { jwtDecode } from "jwt-decode";
-import { decode as decodeToken } from "base-64";
-global.atob = decodeToken;
+
 interface AuthContextType {
   user: any; // Adjust the type according to your user model
   token: string | null;
@@ -31,15 +24,14 @@ interface AuthProviderProps {
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<TokenPayload | null>(null);
   const [token, setToken] = useState<string | null>(null);
   const [loaded, setLoaded] = useState<boolean>(false);
-  const segments = useSegments();
 
   const decode = (token: string) => {
     setLoaded(false);
     try {
-      const result = JSON.parse(atob(token.split(".")[1]));
+      const result = JSON.parse(atob(token.split(".")[1])) as TokenPayload;
 
       console.log(result);
       setToken(token);
