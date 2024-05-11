@@ -65,47 +65,49 @@ export default function Index() {
         <ResultDisplay recipe={result} dismiss={dismissModal} />
       </Modal>
       <View style={styles.container}>
-        <View style={{ gap: 16, marginHorizontal: 16 }}>
-          {loading ? (
-            <View style={{ gap: 20 }}>
-              <ActivityIndicator size="large" color="#00ff00" />
-              <Text style={styles.subTitle}>Generating Recipe</Text>
+        {loading ? (
+          <View style={{ gap: 20 }}>
+            <ActivityIndicator size="large" color="#00ff00" />
+            <Text style={styles.subTitle}>Generating Recipe</Text>
+          </View>
+        ) : (
+          <>
+            <View style={{ gap: 16, marginHorizontal: 16 }}>
+              <>
+                <View>
+                  <Text style={styles.title}>When Yappers</Text>
+                  <Text style={styles.title}>Meet Food Cravings</Text>
+                </View>
+
+                <Text style={styles.subTitle}>Ask, we suggest, you cook.</Text>
+              </>
             </View>
-          ) : (
-            <>
-              <View>
-                <Text style={styles.title}>When Yappers</Text>
-                <Text style={styles.title}>Meet Food Cravings</Text>
-              </View>
 
-              <Text style={styles.subTitle}>Ask, we suggest, you cook.</Text>
-            </>
-          )}
-        </View>
-
-        <TextInput
-          placeholder="What's your craving..."
-          style={{
-            backgroundColor: colors.neutral["50"],
-            padding: 14,
-            alignSelf: "center",
-            position: "absolute",
-            bottom: 40,
-            left: 20,
-            right: 20,
-            borderRadius: 18,
-            height: 36,
-            paddingLeft: 20,
-            fontFamily: "JakartaMedium",
-          }}
-          placeholderTextColor={colors.neutral["500"]}
-          value={chat}
-          onChange={(text) => onChange(text)}
-          onSubmitEditing={onSubmitEditing}
-        />
-        <Pressable style={{ height: 30, width: 60 }} onPress={handleClick}>
-          <Text>Generate</Text>
-        </Pressable>
+            <TextInput
+              placeholder="What's your craving..."
+              style={{
+                backgroundColor: colors.neutral["50"],
+                padding: 14,
+                alignSelf: "center",
+                position: "absolute",
+                bottom: 40,
+                left: 20,
+                right: 20,
+                borderRadius: 18,
+                height: 44,
+                paddingLeft: 20,
+                fontFamily: "JakartaMedium",
+              }}
+              placeholderTextColor={colors.neutral["500"]}
+              value={chat}
+              onChange={(text) => onChange(text)}
+              onSubmitEditing={onSubmitEditing}
+            />
+            <Pressable style={{ height: 30, width: 60 }} onPress={handleClick}>
+              <Text>Generate</Text>
+            </Pressable>
+          </>
+        )}
       </View>
     </>
   );

@@ -93,7 +93,7 @@ const ResultDisplay = (props: {
         <Text style={styles.header}>{recipe.name}</Text>
         <View style={styles.subHeader}>
           <Text style={styles.cuisine}>{recipe.cuisine}</Text>
-          <Text style={styles.cuisine}>Serves {recipe.people}</Text>
+          {/* <Text style={styles.cuisine}>Serves {recipe.people}</Text> */}
           <View style={styles.preparationTime}>
             <Text style={styles.preparationTimeText}>{recipe.cookTime}</Text>
           </View>
@@ -118,6 +118,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    marginTop: 40,
   },
   image: {
     width: "100%",
