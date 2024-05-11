@@ -13,6 +13,7 @@ import { useRouter } from "expo-router";
 import { getSavedRecipes } from "@/services/recipeService";
 import useAuth from "@/components/hooks/useAuth";
 import { SavedMealsObject, SavedMealsResponse } from "@/types";
+import { useSavedMeals } from "@/components/providers/SavedProvider";
 interface Item {
   title: string;
   date: string;
@@ -60,24 +61,8 @@ const dummyData: Item[] = [
 
 const Index: React.FC = () => {
   const { user, token } = useAuth();
-  const [recipes, setRecipes] = useState<SavedMealsObject[] | null>(null);
   const router = useRouter();
-  const [loading, setLoading] = useState(true); // State to track loading status
-
-  const getSaved = async () => {
-    if (!token || !user.user.id) {
-      setLoading(false);
-      return;
-    }
-    const args = { userId: user.user.id, token: token };
-    const result = await getSavedRecipes(args);
-    setRecipes(result);
-    setLoading(false); // Set loading to false once data is fetched
-  };
-
-  useEffect(() => {
-    getSaved();
-  }, []);
+  const { savedMeals, isLoading, refreshMeals } = useSavedMeals();
 
   const renderItem = ({ item }) => (
     <Pressable
@@ -106,7 +91,7 @@ const Index: React.FC = () => {
     <Text style={styles.sectionHeader}>{title}</Text>
   );
 
-  if (loading) {
+  if (isLoading) {
     return (
       <View style={styles.container}>
         <ActivityIndicator size="large" color="#0000ff" />
@@ -114,15 +99,15 @@ const Index: React.FC = () => {
     );
   }
 
-  if (!recipes || recipes.length === 0) {
+  if (!savedMeals || savedMeals.length === 0) {
     return (
       <View style={styles.container}>
-        <Text>No recipes found.</Text>
+        <Text>No savedMeals found.</Text>
       </View>
     );
   }
 
-  const sectionData = recipes.reduce((acc, curr) => {
+  const sectionData = savedMeals.reduce((acc, curr) => {
     const date = new Date(curr.createdAt);
     const today = new Date();
     const yesterday = new Date(today);

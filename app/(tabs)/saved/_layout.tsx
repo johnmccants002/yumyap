@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import useAuth from "@/components/hooks/useAuth";
 import { colors } from "@/constants/Colors";
 import { Text, View } from "react-native";
+import { SavedProvider } from "@/components/providers/SavedProvider";
 
 type Props = {};
 
@@ -18,34 +19,36 @@ const Layout = (props: Props) => {
   //   }
   // }, [loaded]);
   return (
-    <Stack>
-      <Stack.Screen
-        name="index"
-        options={{
-          headerTitle: () => <></>,
+    <SavedProvider>
+      <Stack>
+        <Stack.Screen
+          name="index"
+          options={{
+            headerTitle: () => <></>,
 
-          headerLeft: () => (
-            <View style={{ marginLeft: 20 }}>
-              <Text
-                style={{
-                  fontSize: 34,
-                  fontFamily: "SFProTextSemibold",
-                  color: colors.whiteBlack["100"],
-                }}
-              >
-                Saved
-              </Text>
-            </View>
-          ),
-        }}
-      />
-      <Stack.Screen
-        name="[detail]"
-        options={{
-          headerBackTitleVisible: false,
-        }}
-      />
-    </Stack>
+            headerLeft: () => (
+              <View style={{ marginLeft: 20 }}>
+                <Text
+                  style={{
+                    fontSize: 34,
+                    fontFamily: "SFProTextSemibold",
+                    color: colors.whiteBlack["100"],
+                  }}
+                >
+                  Saved
+                </Text>
+              </View>
+            ),
+          }}
+        />
+        <Stack.Screen
+          name="[detail]"
+          options={{
+            headerBackTitleVisible: false,
+          }}
+        />
+      </Stack>
+    </SavedProvider>
   );
 };
 

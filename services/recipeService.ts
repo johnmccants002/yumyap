@@ -1,5 +1,10 @@
 import axios from "axios";
-import { Recipe, SaveRecipeResponse, SavedMealsResponse } from "@/types";
+import {
+  Recipe,
+  SaveRecipeResponse,
+  SavedMealsObject,
+  SavedMealsResponse,
+} from "@/types";
 
 interface SaveRecipeArg {
   recipe: Recipe;
@@ -7,7 +12,7 @@ interface SaveRecipeArg {
   token: string;
 }
 
-interface GetSavedRecipeArgs {
+export interface GetSavedRecipeArgs {
   token: string;
   userId: number;
 }
@@ -28,7 +33,7 @@ export const getRecipe = async (text: string): Promise<any> => {
 
 export const getSavedRecipes = async (
   args: GetSavedRecipeArgs
-): Promise<SavedMealsResponse> => {
+): Promise<SavedMealsObject[]> => {
   console.log(JSON.stringify(args), "THESE ARE THE ARGS");
   try {
     const response = await axios.get(`${API_URL}/meal/get/${args.userId}`, {
