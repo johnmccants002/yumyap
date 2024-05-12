@@ -12,6 +12,7 @@ import { Recipe } from "@/types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { saveRecipe } from "@/services/recipeService";
 import useAuth from "./hooks/useAuth";
+import { useSavedMeals } from "./providers/SavedProvider";
 
 const recipeData = {
   name: "Spaghetti all'arrabbiata",

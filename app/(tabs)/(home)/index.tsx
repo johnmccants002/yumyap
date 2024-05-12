@@ -6,6 +6,9 @@ import {
   Pressable,
   Modal,
   ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+  useWindowDimensions,
 } from "react-native"; // Import Keyboard module
 
 import { Text, View } from "@/components/Themed";
@@ -19,6 +22,7 @@ export default function Index() {
   const [loading, setLoading] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [result, setResult] = useState<Recipe | null>(null);
+  const { width } = useWindowDimensions();
 
   const onChange = (text: any) => {
     setChat(text.nativeEvent.text);
@@ -64,7 +68,11 @@ export default function Index() {
       >
         <ResultDisplay recipe={result} dismiss={dismissModal} />
       </Modal>
-      <View style={styles.container}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+        keyboardVerticalOffset={80}
+      >
         {loading ? (
           <View style={{ gap: 20 }}>
             <ActivityIndicator size="large" color="#00ff00" />
@@ -72,16 +80,46 @@ export default function Index() {
           </View>
         ) : (
           <>
-            <View style={{ gap: 16, marginHorizontal: 16 }}>
+            <View
+              style={{
+                gap: 16,
+                marginHorizontal: 16,
+                flex: 1,
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <>
                 <View>
                   <Text style={styles.title}>When Yappers</Text>
                   <Text style={styles.title}>Meet Food Cravings</Text>
+                  <Text style={styles.subTitle}>
+                    Ask, we suggest, you cook.
+                  </Text>
                 </View>
-
-                <Text style={styles.subTitle}>Ask, we suggest, you cook.</Text>
               </>
             </View>
+            <Pressable
+              style={{
+                height: 50,
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 25, // half of the height to create a pill shape
+                paddingHorizontal: 40, // horizontal padding }} onPress={handleClick}>
+                backgroundColor:
+                  chat.length > 0 ? colors.primary["400"] : "grey",
+              }}
+              onPress={handleClick}
+            >
+              <Text
+                style={{
+                  color: colors.whiteBlack["50"],
+                  fontFamily: "JakartaMedium",
+                }}
+              >
+                Generate
+              </Text>
+            </Pressable>
 
             <TextInput
               placeholder="What's your craving..."
@@ -89,13 +127,12 @@ export default function Index() {
                 backgroundColor: colors.neutral["50"],
                 padding: 14,
                 alignSelf: "center",
-                position: "absolute",
-                bottom: 40,
-                left: 20,
-                right: 20,
+                marginVertical: 40,
+
+                width: width * 0.9,
                 borderRadius: 18,
                 height: 44,
-                paddingLeft: 20,
+
                 fontFamily: "JakartaMedium",
               }}
               placeholderTextColor={colors.neutral["500"]}
@@ -103,12 +140,9 @@ export default function Index() {
               onChange={(text) => onChange(text)}
               onSubmitEditing={onSubmitEditing}
             />
-            <Pressable style={{ height: 30, width: 60 }} onPress={handleClick}>
-              <Text>Generate</Text>
-            </Pressable>
           </>
         )}
-      </View>
+      </KeyboardAvoidingView>
     </>
   );
 }
@@ -117,7 +151,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "space-around",
+    justifyContent: "flex-start",
+    backgroundColor: colors.whiteBlack["50"],
   },
   title: {
     fontSize: 32,
@@ -134,5 +169,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: "center",
     color: colors.neutral["600"],
+    marginTop: 12,
   },
 });

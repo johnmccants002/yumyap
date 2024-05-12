@@ -64,6 +64,10 @@ const Index: React.FC = () => {
   const router = useRouter();
   const { savedMeals, isLoading, refreshMeals } = useSavedMeals();
 
+  useEffect(() => {
+    refreshMeals();
+  }, []);
+
   const renderItem = ({ item }) => (
     <Pressable
       style={styles.itemContainer}
