@@ -8,6 +8,8 @@ import {
   useWindowDimensions,
   StyleSheet,
   Alert,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
@@ -44,28 +46,34 @@ const Page = (props: Props) => {
   };
 
   return (
-    <View style={styles.container}>
-      <Image
-        source={require("@/assets/images/YumYap.png")}
-        style={[styles.logo, { width: width / 2 }]}
-      />
-      <Text style={styles.description}>
-        Simplifies cooking by magically transforming your cravings into detailed
-        recipes.
-      </Text>
+    <KeyboardAvoidingView
+      style={styles.container}
+      // keyboardVerticalOffset={80}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
+      <View
+        style={{
+          flexGrow: 1,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Image
+          source={require("@/assets/images/YumYap.png")}
+          style={[styles.logo, { width: width / 2 }]}
+        />
+        <Text style={styles.description}>
+          Simplifies cooking by magically transforming your cravings into
+          detailed recipes.
+        </Text>
+      </View>
 
       <View
         style={[
           styles.card,
           {
             width: width,
-            justifyContent: "space-evenly",
-            paddingBottom: 80,
-            position: "absolute",
-            bottom: 0,
-            right: 0,
-            left: 0,
-            height: 500,
+            flexGrow: 1,
           },
         ]}
       >
@@ -106,7 +114,7 @@ const Page = (props: Props) => {
           </Pressable>
         </View>
       </View>
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -115,8 +123,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.primary["100"],
     justifyContent: "flex-start",
-    alignItems: "center",
-    paddingTop: 80,
   },
   logo: {
     resizeMode: "contain",
@@ -149,6 +155,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.neutral["300"],
     borderRadius: 10,
+    paddingLeft: 12,
 
     backgroundColor: colors.neutral["200"],
   },
