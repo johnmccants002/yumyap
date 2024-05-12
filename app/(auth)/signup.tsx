@@ -9,6 +9,8 @@ import {
   useWindowDimensions,
   Pressable,
   Alert,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { colors } from "@/constants/Colors";
 import { signUp } from "@/services/authService";
@@ -61,7 +63,11 @@ const Page = (props: Props) => {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView
+      style={styles.container}
+      // keyboardVerticalOffset={80}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
       <Text style={styles.title}>Create Account</Text>
       <View
         style={{ width: width, padding: 8, gap: 20, paddingHorizontal: 20 }}
@@ -106,7 +112,7 @@ const Page = (props: Props) => {
       {isLoading && (
         <ActivityIndicator size="large" color={colors.primary["700"]} />
       )}
-    </View>
+    </KeyboardAvoidingView>
   );
 };
 

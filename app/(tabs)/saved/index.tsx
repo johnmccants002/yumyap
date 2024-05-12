@@ -6,14 +6,17 @@ import {
   StyleSheet,
   Pressable,
   ActivityIndicator,
+  Alert,
 } from "react-native";
 import { colors } from "@/constants/Colors";
 import { Entypo } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { getSavedRecipes } from "@/services/recipeService";
+import { getSavedRecipes, deleteRecipe } from "@/services/recipeService";
+
 import useAuth from "@/components/hooks/useAuth";
 import { SavedMealsObject, SavedMealsResponse } from "@/types";
 import { useSavedMeals } from "@/components/providers/SavedProvider";
+import { useActionSheet } from "@expo/react-native-action-sheet";
 interface Item {
   title: string;
   date: string;
@@ -63,6 +66,44 @@ const Index: React.FC = () => {
   const { user, token } = useAuth();
   const router = useRouter();
   const { savedMeals, isLoading, refreshMeals } = useSavedMeals();
+  const { showActionSheetWithOptions } = useActionSheet();
+
+  const recipeOptionsPressed = (id: string) => {
+    console.log("DELETING RECIPE");
+    const options = ["Delete", "Cancel"];
+    const destructiveButtonIndex = 0;
+    const cancelButtonIndex = 1;
+    showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex,
+        destructiveButtonIndex,
+      },
+      (i?: number) => {
+        switch (i) {
+          case 1:
+            break;
+          case 0:
+            Alert.alert("Are you sure you want to delete this recipe?", "", [
+              {
+                text: "Cancel",
+                onPress: () => console.log("Canceling"),
+                style: "cancel",
+              },
+              {
+                text: "Delete",
+                onPress: async () => {
+                  await deleteRecipe(id, token ? token : "");
+
+                  refreshMeals();
+                },
+                style: "destructive",
+              },
+            ]);
+        }
+      }
+    );
+  };
 
   useEffect(() => {
     refreshMeals();
@@ -81,6 +122,7 @@ const Index: React.FC = () => {
           justifyContent: "center",
           alignItems: "center",
         }}
+        onPress={() => recipeOptionsPressed(item.id)}
       >
         <Entypo
           name="dots-three-horizontal"

@@ -69,3 +69,18 @@ export const saveRecipe = async (
     throw err;
   }
 };
+
+export const deleteRecipe = async (id: string, token: string) => {
+  try {
+    const response = await axios.delete(`${API_URL}/meal/delete/${id}`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (err) {
+    console.log("Error saving recipe", err);
+    throw err;
+  }
+};

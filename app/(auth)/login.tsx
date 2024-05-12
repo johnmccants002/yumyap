@@ -28,6 +28,8 @@ const Page = (props: Props) => {
 
   const loginPressed = async () => {
     setLoading(true);
+    const lowerCaseEmail = email.toLowerCase();
+    console.log(lowerCaseEmail);
     const credentials = {
       email,
       password,
