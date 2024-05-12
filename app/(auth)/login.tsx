@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
+import useAuth from "@/components/hooks/useAuth";
+import { colors } from "@/constants/Colors";
+import { login } from "@/services/authService";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
 import {
-  Text,
-  View,
-  Image,
-  Pressable,
-  TextInput,
-  useWindowDimensions,
-  StyleSheet,
   Alert,
+  Image,
   KeyboardAvoidingView,
   Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  useWindowDimensions,
 } from "react-native";
-import { colors } from "@/constants/Colors";
-import { useRouter } from "expo-router";
-import { login } from "@/services/authService";
-import useAuth from "@/components/hooks/useAuth";
 
 type Props = {};
 

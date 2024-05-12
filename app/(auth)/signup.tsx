@@ -1,21 +1,20 @@
+import useAuth from "@/components/hooks/useAuth";
+import { colors } from "@/constants/Colors";
+import { signUp } from "@/services/authService";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
-  Text,
-  View,
-  TextInput,
-  StyleSheet,
-  Button,
   ActivityIndicator,
-  useWindowDimensions,
-  Pressable,
   Alert,
   KeyboardAvoidingView,
   Platform,
+  Pressable,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  useWindowDimensions,
 } from "react-native";
-import { colors } from "@/constants/Colors";
-import { signUp } from "@/services/authService";
-import useAuth from "@/components/hooks/useAuth";
-import { useRouter } from "expo-router";
 type Props = {};
 
 const Page = (props: Props) => {

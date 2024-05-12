@@ -3,15 +3,13 @@ import { colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
 import React, { useRef, useState } from "react";
 import {
-  StyleSheet,
-  View,
-  Text,
-  Image,
   FlatList,
-  Dimensions,
-  useWindowDimensions,
-  Button,
+  Image,
   Pressable,
+  StyleSheet,
+  Text,
+  View,
+  useWindowDimensions,
 } from "react-native";
 
 // onboardingData.ts

@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  SectionList,
-  StyleSheet,
-  Pressable,
-  ActivityIndicator,
-  Alert,
-} from "react-native";
 import { colors } from "@/constants/Colors";
+import { deleteRecipe } from "@/services/recipeService";
 import { Entypo } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { getSavedRecipes, deleteRecipe } from "@/services/recipeService";
+import React, { useEffect } from "react";
+import {
+  ActivityIndicator,
+  Alert,
+  Pressable,
+  SectionList,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 import useAuth from "@/components/hooks/useAuth";
-import { SavedMealsObject, SavedMealsResponse } from "@/types";
 import { useSavedMeals } from "@/components/providers/SavedProvider";
 import { useActionSheet } from "@expo/react-native-action-sheet";
 interface Item {
@@ -23,7 +22,7 @@ interface Item {
 }
 
 const Index: React.FC = () => {
-  const { user, token } = useAuth();
+  const { token } = useAuth();
   const router = useRouter();
   const { savedMeals, isLoading, refreshMeals } = useSavedMeals();
   const { showActionSheetWithOptions } = useActionSheet();

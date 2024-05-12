@@ -1,7 +1,6 @@
-import { Stack, useRouter } from "expo-router";
+import { Stack } from "expo-router";
 import React from "react";
 
-import useAuth from "@/components/hooks/useAuth";
 import { SavedProvider } from "@/components/providers/SavedProvider";
 import { colors } from "@/constants/Colors";
 import { Text, View } from "react-native";

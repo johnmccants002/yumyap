@@ -1,6 +1,7 @@
 import { colors } from "@/constants/Colors";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   Image,
   Pressable,
   ScrollView,
@@ -12,35 +13,7 @@ import { Recipe } from "@/types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { saveRecipe } from "@/services/recipeService";
 import useAuth from "./hooks/useAuth";
-import { useSavedMeals } from "./providers/SavedProvider";
-
-const recipeData = {
-  name: "Spaghetti all'arrabbiata",
-  cuisine: "Italian",
-  image:
-    "https://www.simplyrecipes.com/wp-content/uploads/2014/06/spaghetti-arrabbiata-horiz-a-1600.jpg",
-  people: 4,
-  cookTime: "35 minutes",
-  ingredients: {
-    "1": "1 pound spaghetti",
-    "2": "4 tablespoons olive oil",
-    "3": "4 garlic cloves, thinly sliced",
-    "4": "1/2 teaspoon red pepper flakes (adjust to taste for desired spice level)",
-    "5": "1 can (28 ounces) crushed tomatoes",
-    "6": "Salt to taste",
-    "7": "Freshly ground black pepper to taste",
-    "8": "Fresh basil leaves, chopped (for garnish)",
-    "9": "Freshly grated Parmesan cheese (optional, for serving)",
-  },
-  steps: {
-    "1": "Cook the spaghetti according to the package instructions in a large pot of boiling salted water until al dente. Drain the spaghetti, reserving 1/2 cup of the pasta water.",
-    "2": "In a large skillet, heat the olive oil over medium heat. Add the sliced garlic and red pepper flakes, and cook, stirring, until the garlic is golden but not browned, about 1-2 minutes.",
-    "3": "Carefully add the crushed tomatoes to the skillet, and season with salt and pepper. Bring to a simmer and cook for 15-20 minutes, stirring occasionally, until the sauce thickens slightly.",
-    "4": "Add the cooked spaghetti to the skillet with the sauce, along with the reserved pasta water. Toss to coat the spaghetti evenly with the sauce.",
-    "5": "Garnish with chopped fresh basil leaves and serve hot. Offer freshly grated Parmesan cheese on the side, if desired.",
-    "6": "Buon Appetito!",
-  },
-};
+import { fetchImages } from "@/services/photoService";
 
 const ResultDisplay = (props: {
   recipe: Recipe | null;
@@ -49,10 +22,29 @@ const ResultDisplay = (props: {
   const { recipe, dismiss } = props;
   const { user, token } = useAuth();
   const [saved, setSaved] = useState(false);
+  const [imageUrl, setImageUrl] = useState(null);
+  const [imageLoading, setImageLoading] = useState(true);
+
+  useEffect(() => {
+    if (recipe && recipe.name) {
+      fetchImages(recipe.name)
+        .then((images) => {
+          if (images && images.length > 0) {
+            setImageUrl(images[0].urls.regular); // Setting the image URL from the fetched data
+            setImageLoading(false);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching images:", error);
+        });
+    }
+  }, [recipe]);
 
   const saveUserRecipe = async () => {
     if (!recipe || !token) return;
-    const args = { recipe: recipe, userId: user.user.id, token: token };
+
+    const updatedRecipe = { ...recipe, image: imageUrl ? imageUrl : "" };
+    const args = { recipe: updatedRecipe, userId: user.user.id, token: token };
     try {
       await saveRecipe(args);
       setSaved(true);
@@ -102,10 +94,17 @@ const ResultDisplay = (props: {
             />
           </Pressable>
         </View>
-        <Image
-          source={require("@/assets/images/food.png")}
-          style={styles.image}
-        />
+        {imageLoading ? (
+          <View style={styles.image}>
+            <ActivityIndicator />
+          </View>
+        ) : (
+          <Image
+            source={{ uri: imageUrl ? imageUrl : "" }} // Using the state imageUrl to display the image
+            style={styles.image}
+            defaultSource={require("@/assets/images/food.png")} // Optional: Placeholder image while loading or if no image
+          />
+        )}
         <Text style={styles.header}>{recipe.name}</Text>
         <View style={styles.subHeader}>
           <Text style={styles.cuisine}>{recipe.cuisine}</Text>
