@@ -15,6 +15,7 @@ import {
 import { colors } from "@/constants/Colors";
 import { signUp } from "@/services/authService";
 import useAuth from "@/components/hooks/useAuth";
+import { useRouter } from "expo-router";
 type Props = {};
 
 const Page = (props: Props) => {
@@ -24,6 +25,7 @@ const Page = (props: Props) => {
   const [errorMessage, setErrorMessage] = useState("");
   const { setToken, decode } = useAuth();
   const { width } = useWindowDimensions();
+  const router = useRouter();
 
   const validateEmail = (email: string) => {
     const emailRegex = /^\S+@\S+\.\S+$/;
@@ -48,7 +50,8 @@ const Page = (props: Props) => {
     try {
       const result = await signUp(credentials);
       setToken(result);
-      // decode(result);
+      decode(result);
+      router.replace("/");
     } catch (err) {
       Alert.alert(`${err}`);
       throw err;

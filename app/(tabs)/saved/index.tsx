@@ -22,46 +22,6 @@ interface Item {
   date: string;
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 22,
-    backgroundColor: colors.whiteBlack["50"],
-  },
-  sectionHeader: {
-    paddingTop: 2,
-    paddingLeft: 10,
-    paddingRight: 10,
-    paddingBottom: 2,
-    fontSize: 14,
-    fontWeight: "bold",
-    fontFamily: "Inter",
-    color: colors.neutral["500"],
-  },
-  item: {
-    fontSize: 16,
-    fontFamily: "JakartaRegular",
-  },
-  itemContainer: {
-    backgroundColor: colors.neutral["50"],
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    height: 60,
-
-    borderRadius: 8,
-  },
-});
-
-const dummyData: Item[] = [
-  { title: "Pancetta Paradiso", date: "2024-05-06" },
-  { title: "Duck Delight", date: "2024-05-06" },
-  { title: "Spaghetti w/ Rich Meat Sauce", date: "2024-05-05" },
-  { title: "Beef Wellington", date: "2024-05-04" },
-  // Add more dummy data as needed
-];
-
 const Index: React.FC = () => {
   const { user, token } = useAuth();
   const router = useRouter();
@@ -195,5 +155,37 @@ const Index: React.FC = () => {
     </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 22,
+    backgroundColor: colors.whiteBlack["50"],
+  },
+  sectionHeader: {
+    paddingTop: 2,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 2,
+    fontSize: 14,
+    fontWeight: "bold",
+    fontFamily: "Inter",
+    color: colors.neutral["500"],
+  },
+  item: {
+    fontSize: 16,
+    fontFamily: "JakartaRegular",
+  },
+  itemContainer: {
+    backgroundColor: colors.neutral["50"],
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    height: 60,
+
+    borderRadius: 8,
+  },
+});
 
 export default Index;
