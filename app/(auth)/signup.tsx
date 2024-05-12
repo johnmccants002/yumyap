@@ -90,6 +90,7 @@ const Page = (props: Props) => {
           </Text>
           <TextInput
             style={styles.input}
+            secureTextEntry={true}
             placeholder="Enter password..."
             placeholderTextColor={colors.neutral["300"]}
             value={password}
