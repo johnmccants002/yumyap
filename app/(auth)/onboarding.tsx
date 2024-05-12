@@ -1,3 +1,4 @@
+import useLocalStorage from "@/components/hooks/useLocalStorage";
 import { colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
 import React, { useRef, useState } from "react";
@@ -49,6 +50,8 @@ const Page = (props: Props) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
   const router = useRouter();
+  const [isOnboarded, setIsOnboarded] = useLocalStorage("onboarded", "false");
+  console.log(isOnboarded);
 
   const handleScroll = (event: any) => {
     const contentOffsetX = event.nativeEvent.contentOffset.x;
@@ -63,6 +66,7 @@ const Page = (props: Props) => {
       const nextIndex = currentIndex + 1;
       flatListRef.current?.scrollToIndex({ index: nextIndex, animated: true });
     } else {
+      setIsOnboarded("true");
       router.push("/(auth)/login");
     }
   };

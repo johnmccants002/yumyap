@@ -1,5 +1,6 @@
-import { Stack } from "expo-router";
+import { Redirect, Stack } from "expo-router";
 import React from "react";
+import useLocalStorage from "@/components/hooks/useLocalStorage";
 
 type Props = {};
 
