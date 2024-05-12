@@ -1,23 +1,14 @@
 import { Stack, useRouter } from "expo-router";
-import React, { useEffect } from "react";
+import React from "react";
 
 import useAuth from "@/components/hooks/useAuth";
+import { SavedProvider } from "@/components/providers/SavedProvider";
 import { colors } from "@/constants/Colors";
 import { Text, View } from "react-native";
-import { SavedProvider } from "@/components/providers/SavedProvider";
 
 type Props = {};
 
 const Layout = (props: Props) => {
-  const { loaded, token } = useAuth();
-  const router = useRouter();
-
-  // useEffect(() => {
-  //   console.log(token, "THIS IS THE TOKEN", loaded, "THIS IS LOADED");
-  //   if (loaded && !token) {
-  //     router.replace("/(auth)/login");
-  //   }
-  // }, [loaded]);
   return (
     <SavedProvider>
       <Stack>

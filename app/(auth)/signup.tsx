@@ -59,8 +59,6 @@ const Page = (props: Props) => {
 
     setTimeout(() => {
       setIsLoading(false);
-      // Here, you can integrate with your actual signup API.
-      console.log("User signed up:", email, password);
       setErrorMessage("");
     }, 2000);
   };

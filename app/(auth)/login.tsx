@@ -24,17 +24,15 @@ const Page = (props: Props) => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { saveToken, decode } = useAuth();
+  const { decode } = useAuth();
 
   const loginPressed = async () => {
     setLoading(true);
-    const lowerCaseEmail = email.toLowerCase();
-    console.log(lowerCaseEmail);
+
     const credentials = {
       email,
       password,
     };
-    console.log(email, password);
 
     try {
       const result = await login(credentials);

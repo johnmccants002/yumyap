@@ -35,7 +35,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const result = JSON.parse(atob(token.split(".")[1]));
 
-      console.log(result);
       setToken(token);
       setUser(result);
       return result;
@@ -48,7 +47,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const signout = () => {
     setUser(null);
     setToken(null);
-    console.log("User signed out");
   };
 
   const getToken = async () => {

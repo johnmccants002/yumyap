@@ -29,7 +29,6 @@ const Index: React.FC = () => {
   const { showActionSheetWithOptions } = useActionSheet();
 
   const recipeOptionsPressed = (id: string) => {
-    console.log("DELETING RECIPE");
     const options = ["Delete", "Cancel"];
     const destructiveButtonIndex = 0;
     const cancelButtonIndex = 1;

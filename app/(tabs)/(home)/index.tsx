@@ -29,19 +29,16 @@ export default function Index() {
   };
 
   const onSubmitEditing = () => {
-    console.log("Chat submitted:", chat);
     Keyboard.dismiss();
   };
 
   const handleClick = async () => {
     if (chat.length < 1) return;
-    console.log("clicked");
     setLoading(true);
     setChat("");
 
     try {
       const result = await getRecipe(chat);
-      console.log(JSON.stringify(result));
       setResult(result);
       setShowResult(true);
     } catch {
@@ -52,7 +49,6 @@ export default function Index() {
   };
 
   const dismissModal = () => {
-    console.log("DISMISS MODAL BEING CALLED");
     setResult(null);
 
     setShowResult(false);

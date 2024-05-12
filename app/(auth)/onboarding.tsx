@@ -51,7 +51,6 @@ const Page = (props: Props) => {
   const flatListRef = useRef<FlatList>(null);
   const router = useRouter();
   const [isOnboarded, setIsOnboarded] = useLocalStorage("onboarded", "false");
-  console.log(isOnboarded);
 
   const handleScroll = (event: any) => {
     const contentOffsetX = event.nativeEvent.contentOffset.x;

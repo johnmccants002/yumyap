@@ -11,7 +11,6 @@ const Layout = (props: Props) => {
     "onboarded",
     "false"
   );
-  console.log("THIS IS IS ONBOARDED", isOnboarded);
   const router = useRouter();
 
   useEffect(() => {

@@ -24,7 +24,6 @@ export const login = async (credentials: LoginCredentials): Promise<string> => {
 };
 
 export const signUp = async (data: SignUpData): Promise<any> => {
-  console.log(data, "THIS IS THE DATA");
   try {
     const response = await axios.post(`${API_URL}/auth/register`, data);
     return response.data.token; // Adjust based on how your API responds

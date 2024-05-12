@@ -20,10 +20,8 @@ export interface GetSavedRecipeArgs {
 const API_URL = "https://yumyap-7d40e95bc185.herokuapp.com";
 
 export const getRecipe = async (text: string): Promise<any> => {
-  console.log(text);
   try {
     const response = await axios.post(`${API_URL}/ai/openAi`, { text });
-    console.log("response", response);
     return response.data;
   } catch (error) {
     console.error("Error fetching recipe:", error);
@@ -34,7 +32,6 @@ export const getRecipe = async (text: string): Promise<any> => {
 export const getSavedRecipes = async (
   args: GetSavedRecipeArgs
 ): Promise<SavedMealsObject[]> => {
-  console.log(JSON.stringify(args), "THESE ARE THE ARGS");
   try {
     const response = await axios.get(`${API_URL}/meal/get/${args.userId}`, {
       headers: {

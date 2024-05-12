@@ -78,10 +78,9 @@ const recipeData = {
 
 const Page = (props: Props) => {
   const params = useLocalSearchParams();
-  const { savedMeals, getMealById } = useSavedMeals();
+  const { getMealById } = useSavedMeals();
 
   const meal = getMealById(`${params.detail}`)?.meal;
-  console.log("THIS IS THE MEAL", meal);
 
   return (
     <>
