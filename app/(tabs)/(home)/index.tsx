@@ -92,7 +92,7 @@ export default function Index() {
               style={{
                 gap: 16,
                 marginHorizontal: 16,
-                flex: 1,
+                flexGrow: 1,
                 alignItems: "center",
                 justifyContent: "center",
               }}
