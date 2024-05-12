@@ -113,6 +113,16 @@ const ResultDisplay = (props: {
             <Text style={styles.preparationTimeText}>{recipe.cookTime}</Text>
           </View>
         </View>
+        <Text>Ingredients</Text>
+        {Object.entries(recipe.ingredients).map(
+          ([stepNumber, stepDescription], idx) => (
+            <View key={idx} style={styles.stepContainer}>
+              <Text key={idx} style={styles.stepContent}>
+                {stepDescription}
+              </Text>
+            </View>
+          )
+        )}
         <Text style={styles.description}>
           Follow these step-by-step instructions to prepare this delicious dish:
         </Text>
