@@ -34,6 +34,7 @@ export default function Index() {
   };
 
   const handleClick = async () => {
+    if (chat.length < 1) return;
     console.log("clicked");
     setLoading(true);
     setChat("");
@@ -74,7 +75,14 @@ export default function Index() {
         keyboardVerticalOffset={80}
       >
         {loading ? (
-          <View style={{ gap: 20 }}>
+          <View
+            style={{
+              gap: 20,
+              flexGrow: 1,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <ActivityIndicator size="large" color="#00ff00" />
             <Text style={styles.subTitle}>Generating Recipe</Text>
           </View>
