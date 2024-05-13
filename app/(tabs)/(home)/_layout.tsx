@@ -14,6 +14,7 @@ const Layout = (props: Props) => {
   const router = useRouter();
 
   useEffect(() => {
+    console.log("IN THIS USE EFFECT LAYOUT HOME");
     if (!isOnboardedLoading && loaded && !token) {
       if (!isOnboarded) {
         router.replace("/(auth)/onboarding");

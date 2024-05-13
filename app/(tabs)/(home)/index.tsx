@@ -16,23 +16,6 @@ import { colors } from "@/constants/Colors";
 import { getRecipe } from "@/services/recipeService";
 import ResultDisplay from "@/components/ResultDisplay";
 import { Recipe } from "@/types";
-import axios from "axios";
-
-const fetchImages = async (searchQuery: string) => {
-  try {
-    const response = await axios.get(`https://api.unsplash.com/search/photos`, {
-      params: {
-        query: searchQuery,
-        client_id: process.env.EXPO_PUBLIC_UNSPLASH_API_KEY,
-        per_page: 1,
-      },
-    });
-    console.log(response.data.results);
-    return response.data.results;
-  } catch (error) {
-    console.error("Error fetching images:", error);
-  }
-};
 
 // Usage
 
@@ -74,12 +57,6 @@ export default function Index() {
   };
 
   const saveRecipe = () => {};
-
-  useEffect(() => {
-    fetchImages("Apple Pie").then((images) => {
-      // handle images here
-    });
-  }, []);
 
   return (
     <>
