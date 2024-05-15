@@ -1,4 +1,5 @@
 import useAuth from "@/components/hooks/useAuth";
+import useLocalStorage from "@/components/hooks/useLocalStorage";
 import { colors } from "@/constants/Colors";
 import { login } from "@/services/authService";
 import { useRouter } from "expo-router";
@@ -24,8 +25,7 @@ const Page = (props: Props) => {
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { decode } = useAuth();
-
+  const { decode, setToken } = useAuth();
   const loginPressed = async () => {
     setLoading(true);
 
@@ -36,7 +36,9 @@ const Page = (props: Props) => {
 
     try {
       const result = await login(credentials);
+      setToken(result);
       decode(result);
+
       router.replace("/");
     } catch (err) {
       console.log("Error Logging in ", err);

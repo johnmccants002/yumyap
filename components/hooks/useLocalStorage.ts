@@ -9,14 +9,31 @@ type StorageAPI = {
 
 const useLocalStorage = (
   key: string,
-  initialValue: string
-): [string | null, (value: string) => void, boolean] => {
-  const [storedValue, setStoredValue] = useState<string | null>(null);
+  initialValue: string | boolean | null
+): [
+  string | boolean | null,
+  (value: string | boolean | null) => void,
+  boolean
+] => {
+  const [storedValue, setStoredValue] = useState<string | boolean | null>(
+    initialValue
+  );
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     getItem().then((value) => {
-      setStoredValue(value);
+      if (value != null) {
+        try {
+          // Attempt to parse the stored JSON
+          const parsed = JSON.parse(value);
+          setStoredValue(parsed);
+        } catch {
+          // If parsing fails, treat as a string
+          setStoredValue(value);
+        }
+      } else {
+        setStoredValue(initialValue);
+      }
       setLoading(false);
     });
   }, [key]);
@@ -44,9 +61,10 @@ const useLocalStorage = (
     return await storage.getItem(key);
   };
 
-  const setValue = (value: string) => {
+  const setValue = (value: string | boolean | null) => {
     setStoredValue(value);
-    storage.setItem(key, value);
+    // Ensure that the value is always serialized to a string before storing
+    storage.setItem(key, JSON.stringify(value));
   };
 
   return [storedValue, setValue, loading];

@@ -1,19 +1,18 @@
 // src/context/AuthContext.tsx
+import React, { createContext, ReactNode, useState, useEffect } from "react";
 import { useSegments } from "expo-router";
-import React, { ReactNode, createContext, useEffect, useState } from "react";
-// import * as SecureStore from "expo-secure-store";
 import { decode as decodeToken } from "base-64";
+import useLocalStorage from "@/components/hooks/useLocalStorage"; // Ensure the path is correct
 
 global.atob = decodeToken;
+
 interface AuthContextType {
   user: any; // Adjust the type according to your user model
-  token: string | null;
+  token: string | boolean | null;
   signout: () => void;
-  getToken: () => Promise<string | null>;
-  setToken: (token: string) => void;
   loaded: boolean;
   decode: (token: string) => void;
-  saveToken: () => void;
+  setToken: (token: string | null) => void; // Include setToken in the context
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -26,47 +25,29 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<any>(null);
-  const [token, setToken] = useState<string | null>(null);
-  const [loaded, setLoaded] = useState<boolean>(false);
+  const [token, setToken, loaded] = useLocalStorage("token", null); // useLocalStorage manages token
   const segments = useSegments();
 
   const decode = (token: string) => {
-    setLoaded(false);
     try {
       const result = JSON.parse(atob(token.split(".")[1]));
-
-      setToken(token);
       setUser(result);
-      return result;
     } catch (e) {
-      console.log(e);
-      throw e;
+      console.error("Error decoding token:", e);
+      setUser(null); // Optionally handle decoding errors more gracefully
     }
   };
 
   const signout = () => {
     setUser(null);
-    setToken(null);
+    setToken(null); // Clear token in local storage
   };
 
-  const getToken = async () => {
-    // const token = await SecureStore.getItemAsync("token");
-
-    setToken(token);
-    setLoaded(true);
-
-    return token;
-  };
-  const saveToken = async () => {
-    if (token) {
-      // await SecureStore.setItemAsync("token", token);
-    }
-  };
   useEffect(() => {
-    if (!loaded) {
-      getToken();
+    if (token && typeof token === "string") {
+      decode(token);
     }
-  }, []);
+  }, [token]); // Decode user info when token changes
 
   return (
     <AuthContext.Provider
@@ -74,11 +55,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         user,
         token,
         signout,
-        getToken,
-        setToken,
         loaded,
         decode,
-        saveToken,
+        setToken,
       }}
     >
       {children}
