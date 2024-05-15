@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import useAuth from "@/components/hooks/useAuth";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -8,20 +8,23 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from "react-native";
-// import { useAuth } from "../providers/AuthProvider";
 
 const SettingsScreen = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [coinAmount, setCoinAmount] = useState("");
   const router = useRouter();
-  //   const { logout } = useAuth();
+  const { signout } = useAuth();
+
+  const deleteAccount = () => {};
 
   const dismiss = () => {
     router.back();
   };
 
-  const logout = () => {};
+  const logout = () => {
+    signout();
+    router.replace("/(auth)/login");
+  };
 
   return (
     <View style={styles.container}>
@@ -45,10 +48,14 @@ const SettingsScreen = () => {
             keyboardType="email-address"
           />
         </View>
-
-        <TouchableOpacity style={styles.logoutButton} onPress={logout}>
-          <Text style={styles.logoutText}>Logout</Text>
-        </TouchableOpacity>
+        <View>
+          <TouchableOpacity style={styles.logoutButton} onPress={logout}>
+            <Text style={styles.logoutText}>Logout</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.deleteButton} onPress={logout}>
+            <Text style={styles.logoutText}>Delete Account</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
@@ -109,6 +116,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 16,
     color: "#333", // Dark color for the title
+  },
+  deleteButton: {
+    marginBottom: 40,
+    padding: 20,
+    borderRadius: 10,
+    backgroundColor: "red",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
 

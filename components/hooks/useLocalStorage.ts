@@ -2,41 +2,44 @@ import { useEffect, useState } from "react";
 import * as SecureStore from "expo-secure-store";
 import { Platform } from "react-native";
 
-type StorageAPI = {
+type StorageValue = string | boolean | null;
+type StorageValues = Record<string, StorageValue>;
+type SetValue = (key: string, value: StorageValue) => void;
+
+interface StorageAPI {
   getItem: (key: string) => Promise<string | null>;
   setItem: (key: string, value: string) => Promise<void>;
-};
+}
 
 const useLocalStorage = (
-  key: string,
-  initialValue: string | boolean | null
-): [
-  string | boolean | null,
-  (value: string | boolean | null) => void,
-  boolean
-] => {
-  const [storedValue, setStoredValue] = useState<string | boolean | null>(
-    initialValue
-  );
-  const [loading, setLoading] = useState<boolean>(true);
+  initialValues: StorageValues
+): [StorageValues, SetValue, boolean] => {
+  const [values, setValues] = useState<StorageValues>(initialValues);
+  const [loaded, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    getItem().then((value) => {
-      if (value != null) {
-        try {
-          // Attempt to parse the stored JSON
-          const parsed = JSON.parse(value);
-          setStoredValue(parsed);
-        } catch {
-          // If parsing fails, treat as a string
-          setStoredValue(value);
-        }
-      } else {
-        setStoredValue(initialValue);
-      }
-      setLoading(false);
-    });
-  }, [key]);
+    const loadAll = async () => {
+      const allValues = await Promise.all(
+        Object.keys(initialValues).map(async (key) => {
+          const value = await storage.getItem(key);
+          return {
+            key,
+            value: value !== null ? JSON.parse(value) : initialValues[key],
+          };
+        })
+      );
+
+      const newValues = allValues.reduce((acc, { key, value }) => {
+        acc[key] = value;
+        return acc;
+      }, {});
+
+      setValues(newValues);
+      setLoading(true);
+    };
+
+    loadAll();
+  }, []);
 
   const storage: StorageAPI =
     Platform.OS === "web"
@@ -57,17 +60,13 @@ const useLocalStorage = (
           },
         };
 
-  const getItem = async () => {
-    return await storage.getItem(key);
-  };
-
-  const setValue = (value: string | boolean | null) => {
-    setStoredValue(value);
-    // Ensure that the value is always serialized to a string before storing
+  const setValue: SetValue = (key, value) => {
+    const newValue = { ...values, [key]: value };
+    setValues(newValue);
     storage.setItem(key, JSON.stringify(value));
   };
 
-  return [storedValue, setValue, loading];
+  return [values, setValue, loaded];
 };
 
 export default useLocalStorage;

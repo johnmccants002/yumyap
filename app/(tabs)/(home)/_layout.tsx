@@ -1,31 +1,26 @@
+// Simplify Layout by removing local state management of isOnboarded
 import useAuth from "@/components/hooks/useAuth";
-import useLocalStorage from "@/components/hooks/useLocalStorage";
 import { Stack, useRouter } from "expo-router";
 import React, { useEffect } from "react";
 
-type Props = {};
-
-const Layout = (props: Props) => {
-  const { loaded, token } = useAuth();
-  const [isOnboarded, setIsOnboarded, isOnboardedLoading] = useLocalStorage(
-    "onboarded",
-    "false"
-  );
+const Layout = () => {
+  const { loaded, token, isOnboarded } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    console.log("IN THIS USE EFFECT LAYOUT HOME");
-    if (!isOnboardedLoading && loaded && !token) {
+    if (loaded && !token) {
       if (!isOnboarded) {
         router.replace("/(auth)/onboarding");
       } else {
+        console.log("IN ELSE GO TO LOGIN");
         router.replace("/(auth)/login");
       }
     }
-  }, [loaded, isOnboardedLoading, isOnboarded, token]);
+  }, [loaded, isOnboarded, token]);
   return (
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen name="settings" options={{}} />
     </Stack>
   );
 };
