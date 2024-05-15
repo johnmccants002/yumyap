@@ -52,10 +52,6 @@ const SettingsScreen = () => {
     }
   };
 
-  const dismiss = () => {
-    router.back();
-  };
-
   const logout = () => {
     signout();
     router.replace("/(auth)/login");
@@ -64,25 +60,7 @@ const SettingsScreen = () => {
   return (
     <View style={styles.container}>
       <View style={{ flex: 1, justifyContent: "space-between" }}>
-        <View>
-          <Text style={styles.inputLabelTitle}>Name: </Text>
-          <TextInput
-            style={styles.input}
-            value={name}
-            onChangeText={setName}
-            placeholder="Name"
-            placeholderTextColor="#aaa"
-          />
-          <Text style={styles.inputLabelTitle}>Email: </Text>
-          <TextInput
-            style={styles.input}
-            value={email}
-            onChangeText={setEmail}
-            placeholder="Email"
-            placeholderTextColor="#aaa"
-            keyboardType="email-address"
-          />
-        </View>
+        <View></View>
         <View>
           <TouchableOpacity style={styles.logoutButton} onPress={logout}>
             <Text style={styles.logoutText}>Logout</Text>
