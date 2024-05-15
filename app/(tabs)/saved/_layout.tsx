@@ -17,7 +17,6 @@ const Layout = (props: Props) => {
           name="index"
           options={{
             headerTitle: () => <></>,
-
             headerLeft: () => (
               <View style={{ marginLeft: 20 }}>
                 <Text
@@ -47,7 +46,10 @@ const Layout = (props: Props) => {
             headerBackTitleVisible: false,
           }}
         />
-        <Stack.Screen name="settings" options={{}} />
+        <Stack.Screen
+          name="settings"
+          options={{ title: "Settings", headerBackTitleVisible: false }}
+        />
       </Stack>
     </SavedProvider>
   );

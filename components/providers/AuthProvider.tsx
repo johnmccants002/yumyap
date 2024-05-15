@@ -1,20 +1,27 @@
 // src/context/AuthContext.tsx
 import React, { createContext, ReactNode, useEffect, useState } from "react";
-import { useRouter, useSegments } from "expo-router";
+import { useRouter } from "expo-router";
 import { decode as decodeToken } from "base-64";
-import useLocalStorage from "@/components/hooks/useLocalStorage"; // Ensure the path is correct
+import useLocalStorage from "@/components/hooks/useLocalStorage";
 
 global.atob = decodeToken;
 
+interface UserType {
+  exp: number;
+  iat: number;
+  user: {
+    id: string;
+  };
+}
+
 interface AuthContextType {
-  user: any; // Adjust the type according to your user model
+  user: UserType | null;
   token: string | null | boolean;
   signout: () => void;
   loaded: boolean;
-  decode: (token: string) => void;
-  setToken: (token: string | null) => void; // Include setToken in the context
-  isOnboarded: boolean; // Update the type to be strictly boolean
-  setIsOnboarded: (isOnboarded: boolean) => void; // Setter for isOnboarded
+  setToken: (token: string | null) => void;
+  isOnboarded: boolean;
+  setIsOnboarded: (isOnboarded: boolean) => void;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -27,19 +34,24 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [storageValues, setStorageValue, loaded] = useLocalStorage({
-    token: null, // Initial value for token
-    onboarded: false, // Initial value for onboarded
+    token: null,
+    onboarded: false,
   });
 
   const { token, onboarded } = storageValues;
-  const [user, setUser] = useState<object | null>(null);
+  const [user, setUser] = useState<UserType | null>(null);
   const router = useRouter();
 
   const decode = (token: string) => {
     try {
-      const result = JSON.parse(atob(token.split(".")[1]));
-      console.log("THIS IS THE USER: ", result);
-      setUser(result);
+      const result: UserType = JSON.parse(atob(token.split(".")[1]));
+      if (new Date(result.exp * 1000) < new Date()) {
+        console.log("Token expired.");
+        signout();
+      } else {
+        console.log("THIS IS THE USER: ", result);
+        setUser(result);
+      }
     } catch (e) {
       console.error("Error decoding token:", e);
       setUser(null);
@@ -53,24 +65,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const signout = () => {
     setUser(null);
     setToken(null);
+    router.replace("/(auth)/login");
   };
 
   useEffect(() => {
     if (token && typeof token === "string") {
-      console.log("DECODING TOKEN USE EFFECT");
       decode(token);
     }
   }, [token]);
 
   useEffect(() => {
-    if (loaded) {
-      if (!token) {
-        if (!onboarded) {
-          router.replace("/(auth)/onboarding");
-        } else {
-          console.log("IN ELSE GO TO LOGIN");
-          router.replace("/(auth)/login");
-        }
+    if (loaded && !token) {
+      if (!onboarded) {
+        router.replace("/(auth)/onboarding");
+      } else {
+        router.replace("/(auth)/login");
       }
     }
   }, [loaded, token, onboarded]);
@@ -78,11 +87,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        user, // You may want to manage this based on decoded token info
+        user,
         token,
         signout,
         loaded,
-        decode,
         setToken,
         isOnboarded: onboarded as boolean,
         setIsOnboarded,

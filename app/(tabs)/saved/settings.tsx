@@ -7,6 +7,8 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  Alert,
+  Platform,
 } from "react-native";
 
 const SettingsScreen = () => {
@@ -15,7 +17,40 @@ const SettingsScreen = () => {
   const router = useRouter();
   const { signout } = useAuth();
 
-  const deleteAccount = () => {};
+  const deleteAccount = () => {
+    if (Platform.OS === "web") {
+      // Implement a web-specific alert/dialog
+      // This could be a custom modal or using a library like `react-modal`
+      console.log(
+        "Web alert not supported by default. Consider implementing a modal."
+      );
+      // Example of a simple confirm dialog in web environment:
+      if (window.confirm("Are you sure you want to delete your account?")) {
+        console.log("Delete Pressed");
+      } else {
+        console.log("Cancelled");
+      }
+    } else {
+      // Use React Native's Alert for iOS and Android
+      Alert.alert(
+        "Delete Account",
+        "Are you sure you want to delete your account?",
+        [
+          {
+            text: "Cancel",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel",
+          },
+          {
+            text: "Delete",
+            onPress: () => console.log("Delete Pressed"),
+            style: "destructive",
+          },
+        ],
+        { cancelable: true }
+      );
+    }
+  };
 
   const dismiss = () => {
     router.back();
@@ -52,7 +87,7 @@ const SettingsScreen = () => {
           <TouchableOpacity style={styles.logoutButton} onPress={logout}>
             <Text style={styles.logoutText}>Logout</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.deleteButton} onPress={logout}>
+          <TouchableOpacity style={styles.deleteButton} onPress={deleteAccount}>
             <Text style={styles.logoutText}>Delete Account</Text>
           </TouchableOpacity>
         </View>
