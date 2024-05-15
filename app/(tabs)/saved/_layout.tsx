@@ -1,13 +1,15 @@
-import { Stack } from "expo-router";
+import { Stack, useRouter } from "expo-router";
 import React from "react";
 
 import { SavedProvider } from "@/components/providers/SavedProvider";
 import { colors } from "@/constants/Colors";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 type Props = {};
 
 const Layout = (props: Props) => {
+  const router = useRouter();
   return (
     <SavedProvider>
       <Stack>
@@ -29,6 +31,14 @@ const Layout = (props: Props) => {
                 </Text>
               </View>
             ),
+            headerRight: () => (
+              <Pressable
+                style={{ marginRight: 20 }}
+                onPress={() => router.push("/(tabs)/saved/settings")}
+              >
+                <MaterialCommunityIcons name="cog" color="gray" size={24} />
+              </Pressable>
+            ),
           }}
         />
         <Stack.Screen
@@ -37,6 +47,7 @@ const Layout = (props: Props) => {
             headerBackTitleVisible: false,
           }}
         />
+        <Stack.Screen name="settings" options={{}} />
       </Stack>
     </SavedProvider>
   );

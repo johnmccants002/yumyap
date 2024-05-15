@@ -38,6 +38,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const decode = (token: string) => {
     try {
       const result = JSON.parse(atob(token.split(".")[1]));
+      console.log("THIS IS THE USER: ", result);
       setUser(result);
     } catch (e) {
       console.error("Error decoding token:", e);
@@ -56,6 +57,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   useEffect(() => {
     if (token && typeof token === "string") {
+      console.log("DECODING TOKEN USE EFFECT");
       decode(token);
     }
   }, [token]);
@@ -76,7 +78,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   return (
     <AuthContext.Provider
       value={{
-        user: null, // You may want to manage this based on decoded token info
+        user, // You may want to manage this based on decoded token info
         token,
         signout,
         loaded,
