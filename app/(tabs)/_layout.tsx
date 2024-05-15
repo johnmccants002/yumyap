@@ -43,6 +43,7 @@ export default function TabLayout() {
         name="saved"
         options={{
           headerShown: false,
+          title: "Saved",
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="bookmark" color={color} />
           ),
