@@ -22,6 +22,7 @@ interface AuthContextType {
   setToken: (token: string | null) => void;
   isOnboarded: boolean;
   setIsOnboarded: (isOnboarded: boolean) => void;
+  decode: (token: string) => void;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -43,6 +44,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const router = useRouter();
 
   const decode = (token: string) => {
+    console.log(token, "THIS IS THE TOKEN TO DECODE");
     try {
       const result: UserType = JSON.parse(atob(token.split(".")[1]));
       if (new Date(result.exp * 1000) < new Date()) {
@@ -94,6 +96,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         setToken,
         isOnboarded: onboarded as boolean,
         setIsOnboarded,
+        decode,
       }}
     >
       {children}
