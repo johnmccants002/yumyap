@@ -1,6 +1,6 @@
 // src/context/AuthContext.tsx
 import React, { createContext, ReactNode, useEffect, useState } from "react";
-import { useSegments } from "expo-router";
+import { useRouter, useSegments } from "expo-router";
 import { decode as decodeToken } from "base-64";
 import useLocalStorage from "@/components/hooks/useLocalStorage"; // Ensure the path is correct
 
@@ -33,6 +33,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const { token, onboarded } = storageValues;
   const [user, setUser] = useState<object | null>(null);
+  const router = useRouter();
 
   const decode = (token: string) => {
     try {
@@ -58,6 +59,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       decode(token);
     }
   }, [token]);
+
+  useEffect(() => {
+    if (loaded) {
+      if (!token) {
+        if (!onboarded) {
+          router.replace("/(auth)/onboarding");
+        } else {
+          console.log("IN ELSE GO TO LOGIN");
+          router.replace("/(auth)/login");
+        }
+      }
+    }
+  }, [loaded, token, onboarded]);
 
   return (
     <AuthContext.Provider
