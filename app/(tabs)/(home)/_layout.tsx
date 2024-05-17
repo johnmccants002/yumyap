@@ -7,6 +7,15 @@ const Layout = () => {
   return (
     <Stack>
       <Stack.Screen name="index" options={{ headerShown: false }} />
+      <Stack.Screen
+        name="settings"
+        options={{
+          title: "Settings",
+          headerShown: false,
+          headerBackTitleVisible: false,
+          presentation: "formSheet",
+        }}
+      />
     </Stack>
   );
 };

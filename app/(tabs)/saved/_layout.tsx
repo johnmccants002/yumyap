@@ -1,4 +1,4 @@
-import { Stack, useRouter } from "expo-router";
+import { Stack, useRouter, Link } from "expo-router";
 import React from "react";
 
 import { SavedProvider } from "@/components/providers/SavedProvider";
@@ -31,12 +31,13 @@ const Layout = (props: Props) => {
               </View>
             ),
             headerRight: () => (
-              <Pressable
+              <Link
                 style={{ marginRight: 20 }}
-                onPress={() => router.push("/(tabs)/saved/settings")}
+                href={"/(tabs)/saved/settings"}
+                asChild
               >
                 <MaterialCommunityIcons name="cog" color="gray" size={24} />
-              </Pressable>
+              </Link>
             ),
           }}
         />
@@ -45,10 +46,6 @@ const Layout = (props: Props) => {
           options={{
             headerBackTitleVisible: false,
           }}
-        />
-        <Stack.Screen
-          name="settings"
-          options={{ title: "Settings", headerBackTitleVisible: false }}
         />
       </Stack>
     </SavedProvider>
