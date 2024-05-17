@@ -23,6 +23,10 @@ const Layout = (props: Props) => {
         name="terms-of-service"
         options={{ title: "Terms of Service" }}
       />
+      <Stack.Screen
+        name="delete-account"
+        options={{ title: "Delete Account" }}
+      />
     </Stack>
   );
 };

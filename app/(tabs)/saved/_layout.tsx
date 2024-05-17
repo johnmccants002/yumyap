@@ -30,15 +30,6 @@ const Layout = (props: Props) => {
                 </Text>
               </View>
             ),
-            headerRight: () => (
-              <Link
-                style={{ marginRight: 20 }}
-                href={"/(tabs)/saved/settings"}
-                asChild
-              >
-                <MaterialCommunityIcons name="cog" color="gray" size={24} />
-              </Link>
-            ),
           }}
         />
         <Stack.Screen
