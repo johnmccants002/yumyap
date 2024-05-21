@@ -3,14 +3,7 @@ import { colors } from "@/constants/Colors";
 import { FontAwesome } from "@expo/vector-icons";
 import { Stack, useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
-import {
-  ActivityIndicator,
-  Image,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
 
 type Props = {};
 
@@ -37,23 +30,20 @@ const Page = (props: Props) => {
         <Text style={styles.header}>{meal?.name}</Text>
         <View style={styles.subHeader}>
           <Text style={styles.cuisine}>{meal?.cuisine}</Text>
-          <View style={styles.rating}>
-            <Text style={styles.cuisine}>{4.5}</Text>
-            <FontAwesome name="star" size={24} color={colors.orange["700"]} />
-          </View>
+          <Text style={styles.cuisine}>- {meal?.cookTime} to prepare</Text>
         </View>
-        <View style={styles.preparationTime}>
-          <Text
-            style={{
-              color: colors.neutral["900"],
-              fontFamily: "SFProTextRegular",
-              fontSize: 13,
-            }}
-          >
-            {meal?.cookTime}
-          </Text>
+        <View
+          style={{
+            backgroundColor: "#EAECFF",
+            width: 120,
+            padding: 8,
+            borderRadius: "50%",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Text style={styles.title}>Ingredients</Text>
         </View>
-        <Text>Ingredients</Text>
         {Object.entries(meal?.ingredients).map(
           ([stepNumber, stepDescription], idx) => (
             <View key={idx} style={styles.stepContainer}>
@@ -63,9 +53,18 @@ const Page = (props: Props) => {
             </View>
           )
         )}
-        <Text style={styles.description}>
-          {`To prepare ${meal?.name} follow these step-by-step instructions:`}
-        </Text>
+        <View
+          style={{
+            backgroundColor: "#EAECFF",
+            width: 80,
+            padding: 12,
+            borderRadius: "50%",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Text style={styles.title}>{`Steps`}</Text>
+        </View>
         {Object.entries(meal.steps).map(
           ([stepNumber, stepDescription], idx) => (
             <View key={idx} style={styles.stepContainer}>
@@ -122,6 +121,11 @@ const styles = StyleSheet.create({
   },
   description: {
     marginBottom: 10,
+    fontFamily: "JakartaMedium",
+    fontSize: 14,
+    color: colors.neutral["800"],
+  },
+  title: {
     fontFamily: "JakartaMedium",
     fontSize: 14,
     color: colors.neutral["800"],
