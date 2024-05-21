@@ -1,3 +1,4 @@
+import useAuth from "@/components/hooks/useAuth";
 import { colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -7,6 +8,7 @@ type Props = {};
 
 const Page = (props: Props) => {
   const router = useRouter();
+  const { currentUser } = useAuth();
   return (
     <View
       style={{
@@ -35,7 +37,7 @@ const Page = (props: Props) => {
             color: colors.neutral["700"],
           }}
         >
-          A
+          {currentUser ? currentUser.email[0] : ""}
         </Text>
       </View>
       <View
@@ -56,7 +58,7 @@ const Page = (props: Props) => {
             color: colors.neutral["700"],
           }}
         >
-          willam1234@gmail.com
+          {currentUser ? currentUser.email : ""}
         </Text>
       </View>
       <View style={{ height: 1, backgroundColor: colors.neutral["300"] }} />
