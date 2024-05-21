@@ -16,9 +16,18 @@ import {
 import useAuth from "@/components/hooks/useAuth";
 import { useSavedMeals } from "@/components/providers/SavedProvider";
 import { useActionSheet } from "@expo/react-native-action-sheet";
-interface Item {
+
+interface Meal {
+  _id: string;
+  createdAt: string;
+  meal: {
+    name: string;
+  };
+}
+
+interface Section {
   title: string;
-  date: string;
+  data: { id: string; name: string }[];
 }
 
 const Index: React.FC = () => {
@@ -51,7 +60,7 @@ const Index: React.FC = () => {
               {
                 text: "Delete",
                 onPress: async () => {
-                  await deleteRecipe(id, token ? token : "");
+                  await deleteRecipe(id, token ? `${token}` : "");
 
                   refreshMeals();
                 },
@@ -67,7 +76,7 @@ const Index: React.FC = () => {
     refreshMeals();
   }, []);
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({ item }: any) => (
     <Pressable
       style={styles.itemContainer}
       onPress={() => {
@@ -91,7 +100,7 @@ const Index: React.FC = () => {
     </Pressable>
   );
 
-  const renderSectionHeader = ({ section: { title } }) => (
+  const renderSectionHeader = ({ section: { title } }: any) => (
     <Text style={styles.sectionHeader}>{title}</Text>
   );
 
@@ -110,41 +119,55 @@ const Index: React.FC = () => {
       </View>
     );
   }
+  const sectionData = Object.entries(
+    savedMeals.reduce<Record<string, { id: string; name: string }[]>>(
+      (acc, curr: Meal) => {
+        const date = new Date(curr.createdAt);
+        const today = new Date();
+        const yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
 
-  const sectionData = savedMeals.reduce((acc, curr) => {
-    const date = new Date(curr.createdAt);
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 1);
+        let sectionTitle: string;
+        if (date.toDateString() === today.toDateString()) {
+          sectionTitle = "Today";
+        } else if (date.toDateString() === yesterday.toDateString()) {
+          sectionTitle = "Yesterday";
+        } else {
+          sectionTitle = date.toLocaleDateString();
+        }
 
-    let sectionTitle;
-    if (date.toDateString() === today.toDateString()) {
-      sectionTitle = "Today";
-    } else if (date.toDateString() === yesterday.toDateString()) {
-      sectionTitle = "Yesterday";
-    } else {
-      sectionTitle = date.toLocaleDateString();
-    }
+        if (!acc[sectionTitle]) {
+          acc[sectionTitle] = [];
+        }
+        acc[sectionTitle].push({
+          id: curr._id,
+          name: curr.meal.name,
+        });
+        return acc;
+      },
+      {}
+    )
+  );
 
-    if (!acc[sectionTitle]) {
-      acc[sectionTitle] = [];
-    }
-    acc[sectionTitle].push({
-      id: curr._id,
-      name: curr.meal.name,
-    });
-    return acc;
-  }, {});
-
-  const sections = Object.keys(sectionData).map((key) => ({
-    title: key,
-    data: sectionData[key],
-  }));
+  const sortedSectionData: Section[] = sectionData
+    .sort(([a], [b]) => {
+      if (a === "Today") return -1;
+      if (b === "Today") return 1;
+      if (a === "Yesterday") return -1;
+      if (b === "Yesterday") return 1;
+      const dateA = new Date(a);
+      const dateB = new Date(b);
+      return dateB.getTime() - dateA.getTime();
+    })
+    .map(([title, data]) => ({
+      title,
+      data,
+    }));
 
   return (
     <View style={styles.container}>
       <SectionList
-        sections={sections}
+        sections={sortedSectionData}
         renderItem={renderItem}
         renderSectionHeader={renderSectionHeader}
         keyExtractor={(item, index) => item.id.toString()}
