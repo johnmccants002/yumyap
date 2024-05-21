@@ -19,6 +19,11 @@ interface GetUserParams {
   id: string;
 }
 
+interface DeleteUserParams {
+  token: string;
+  id: string;
+}
+
 export const login = async (credentials: LoginCredentials): Promise<string> => {
   try {
     const response = await axios.post(`${API_URL}/auth/login`, credentials);
@@ -47,5 +52,16 @@ export const fetchUser = async (params: GetUserParams): Promise<any> => {
     return response.data; // Adjust based on how your API responds
   } catch (error) {
     throw new Error("Failed to fetch user");
+  }
+};
+
+export const deleteUser = async (params: DeleteUserParams): Promise<any> => {
+  try {
+    const response = await axios.delete(`${API_URL}/user/delete/${params.id}`, {
+      headers: { Authorization: `Bearer ${params.token}` },
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to delete user");
   }
 };

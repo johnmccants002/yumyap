@@ -8,12 +8,27 @@ import {
   StyleSheet,
   Pressable,
 } from "react-native";
+import { deleteUser } from "@/services/authService";
+import useAuth from "@/components/hooks/useAuth";
 
 const Page = () => {
   const [email, setEmail] = useState("");
   const router = useRouter();
+  const { currentUser, token, user, signout } = useAuth();
 
-  const deleteAccount = () => {};
+  const deleteAccount = async () => {
+    const params = { token: token, id: user?.user.id };
+    if (currentUser.email === email) {
+      try {
+        const response = await deleteUser(params);
+        console.log(response);
+        signout();
+        router.replace("/(auth)/login");
+      } catch {
+        console.log("ERROR DELETING USER");
+      }
+    }
+  };
 
   return (
     <View style={styles.container}>
