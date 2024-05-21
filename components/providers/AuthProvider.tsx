@@ -3,6 +3,7 @@ import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { useRouter } from "expo-router";
 import { decode as decodeToken } from "base-64";
 import useLocalStorage from "@/components/hooks/useLocalStorage";
+import { fetchUser } from "@/services/authService";
 
 global.atob = decodeToken;
 
@@ -23,6 +24,7 @@ interface AuthContextType {
   isOnboarded: boolean;
   setIsOnboarded: (isOnboarded: boolean) => void;
   decode: (token: string) => void;
+  currentUser: any | null;
 }
 
 export const AuthContext = createContext<AuthContextType | undefined>(
@@ -41,6 +43,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const { token, onboarded } = storageValues;
   const [user, setUser] = useState<UserType | null>(null);
+  const [currentUser, setCurrentUser] = useState(null);
   const router = useRouter();
 
   const decode = (token: string) => {
@@ -60,6 +63,22 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  const getUser = async () => {
+    if (!user || !token) return;
+    const params = {
+      token: `${token}`,
+      id: user ? user?.user.id : "",
+    };
+    console.log("THESE are the params", params);
+    try {
+      const user = await fetchUser(params);
+      setCurrentUser(user);
+      console.log(user, "get user");
+    } catch (e) {
+      console.log("Unable to fetch user", e);
+    }
+  };
+
   const setToken = (value: string | null) => setStorageValue("token", value);
   const setIsOnboarded = (value: boolean) =>
     setStorageValue("onboarded", value);
@@ -75,6 +94,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       decode(token);
     }
   }, [token]);
+
+  useEffect(() => {
+    if (user && token) {
+      getUser();
+    }
+  }, [user, token]);
 
   useEffect(() => {
     if (loaded && !token) {
@@ -97,6 +122,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         isOnboarded: onboarded as boolean,
         setIsOnboarded,
         decode,
+        currentUser,
       }}
     >
       {children}

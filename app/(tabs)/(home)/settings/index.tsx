@@ -18,7 +18,7 @@ const SettingsScreen = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const router = useRouter();
-  const { signout } = useAuth();
+  const { signout, currentUser } = useAuth();
 
   const deleteAccount = () => {
     if (Platform.OS === "web") {
@@ -103,7 +103,9 @@ const SettingsScreen = () => {
             borderWidth: 1,
           }}
         >
-          <Text style={{ fontSize: 18, fontFamily: "JakartaMedium" }}>A</Text>
+          <Text style={{ fontSize: 18, fontFamily: "JakartaMedium" }}>
+            {currentUser ? currentUser.email[0] : ""}
+          </Text>
         </View>
         <View style={{ flexDirection: "column", gap: 4 }}>
           <Text
@@ -113,7 +115,7 @@ const SettingsScreen = () => {
               color: colors.neutral["700"],
             }}
           >
-            willam1234@gmail.com
+            {currentUser.email}
           </Text>
           <Pressable
             onPress={() => {

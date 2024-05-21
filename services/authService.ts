@@ -14,6 +14,11 @@ interface SignUpData {
   // Add other necessary fields
 }
 
+interface GetUserParams {
+  token: string;
+  id: string;
+}
+
 export const login = async (credentials: LoginCredentials): Promise<string> => {
   try {
     const response = await axios.post(`${API_URL}/auth/login`, credentials);
@@ -32,12 +37,14 @@ export const signUp = async (data: SignUpData): Promise<any> => {
   }
 };
 
-export const fetchUser = async (token: string): Promise<any> => {
+export const fetchUser = async (params: GetUserParams): Promise<any> => {
+  console.log(`${API_URL}/user/get/${params.id}`);
+  console.log(params.token);
   try {
-    const response = await axios.get(`${API_URL}/user`, {
-      headers: { Authorization: `Bearer ${token}` },
+    const response = await axios.get(`${API_URL}/user/get/${params.id}`, {
+      headers: { Authorization: `Bearer ${params.token}` },
     });
-    return response.data.user; // Adjust based on how your API responds
+    return response.data; // Adjust based on how your API responds
   } catch (error) {
     throw new Error("Failed to fetch user");
   }
