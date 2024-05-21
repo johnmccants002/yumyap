@@ -113,7 +113,18 @@ const ResultDisplay = (props: {
             <Text style={styles.preparationTimeText}>{recipe.cookTime}</Text>
           </View>
         </View>
-        <Text>Ingredients</Text>
+        <View
+          style={{
+            backgroundColor: "#EAECFF",
+            width: 120,
+            padding: 8,
+            borderRadius: "50%",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Text style={styles.title}>Ingredients</Text>
+        </View>
         {Object.entries(recipe.ingredients).map(
           ([stepNumber, stepDescription], idx) => (
             <View key={idx} style={styles.stepContainer}>
@@ -123,9 +134,18 @@ const ResultDisplay = (props: {
             </View>
           )
         )}
-        <Text style={styles.description}>
-          Follow these step-by-step instructions to prepare this delicious dish:
-        </Text>
+        <View
+          style={{
+            backgroundColor: "#EAECFF",
+            width: 80,
+            padding: 12,
+            borderRadius: "50%",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Text style={styles.title}>{`Steps`}</Text>
+        </View>
         {Object.entries(recipe.steps).map(([index, step], idx) => (
           <View key={idx} style={styles.stepContainer}>
             <Text style={styles.stepContent}>{`${parseInt(
@@ -143,6 +163,11 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 20,
     marginTop: 40,
+  },
+  title: {
+    fontFamily: "JakartaMedium",
+    fontSize: 14,
+    color: colors.neutral["800"],
   },
   image: {
     width: "100%",
@@ -174,6 +199,7 @@ const styles = StyleSheet.create({
   preparationTimeText: {
     fontSize: 13,
     color: colors.neutral["900"],
+    fontFamily: "SFProTextRegular",
   },
   description: {
     marginBottom: 10,

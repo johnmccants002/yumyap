@@ -30,7 +30,9 @@ const Page = (props: Props) => {
         <Text style={styles.header}>{meal?.name}</Text>
         <View style={styles.subHeader}>
           <Text style={styles.cuisine}>{meal?.cuisine}</Text>
-          <Text style={styles.cuisine}>- {meal?.cookTime} to prepare</Text>
+          <View style={styles.preparationTime}>
+            <Text style={styles.preparationTimeText}>{meal?.cookTime}</Text>
+          </View>
         </View>
         <View
           style={{
@@ -101,6 +103,7 @@ const styles = StyleSheet.create({
     gap: 8,
     alignItems: "center",
     paddingVertical: 10,
+    justifyContent: "space-between",
   },
   cuisine: {
     fontSize: 18,
@@ -113,10 +116,10 @@ const styles = StyleSheet.create({
   },
   preparationTime: {
     backgroundColor: colors.neutral["100"],
-    width: 60,
+    width: 80,
     alignItems: "center",
     borderRadius: 8,
-    padding: 5,
+    padding: 8,
     marginBottom: 10,
   },
   description: {
@@ -146,6 +149,11 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: colors.neutral["800"],
     paddingTop: 8,
+  },
+  preparationTimeText: {
+    fontSize: 13,
+    color: colors.neutral["900"],
+    fontFamily: "SFProTextRegular",
   },
 });
 
