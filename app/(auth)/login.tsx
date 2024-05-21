@@ -5,6 +5,7 @@ import { login } from "@/services/authService";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
+  ActivityIndicator,
   Alert,
   Image,
   KeyboardAvoidingView,
@@ -20,13 +21,15 @@ import {
 type Props = {};
 
 const Page = (props: Props) => {
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { decode, setToken } = useAuth();
+
   const loginPressed = async () => {
+    if (loading) return;
     setLoading(true);
 
     const credentials = {
@@ -44,6 +47,8 @@ const Page = (props: Props) => {
       console.log("Error Logging in ", err);
       Alert.alert(`Error Logging in, ${err}`);
       throw err;
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -117,6 +122,13 @@ const Page = (props: Props) => {
           </Pressable>
         </View>
       </View>
+      {loading && (
+        <ActivityIndicator
+          style={{ position: "absolute", top: height / 2, left: width / 2 }}
+          size="large"
+          color={colors.primary["700"]}
+        />
+      )}
     </KeyboardAvoidingView>
   );
 };
