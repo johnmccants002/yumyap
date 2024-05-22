@@ -122,6 +122,7 @@ const Index: React.FC = () => {
           flex: 1,
           paddingHorizontal: 60,
           gap: 20,
+          backgroundColor: colors.whiteBlack["50"],
         }}
       >
         <Image source={require("@/assets/images/EmptySaved.png")} />
