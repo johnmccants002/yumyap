@@ -63,6 +63,7 @@ export const SavedProvider: React.FC<SavedProviderProps> = ({ children }) => {
   const { user, token } = useAuth();
 
   const getSavedMeals = async () => {
+    if (!user) return;
     if (!user.user.id || !token) return;
     const args = { userId: user.user.id, token: token };
 
@@ -79,9 +80,9 @@ export const SavedProvider: React.FC<SavedProviderProps> = ({ children }) => {
   };
 
   // Function to refresh the meals from the API
-  const refreshMeals = () => {
+  const refreshMeals = async () => {
     setLoading(true);
-    getSavedMeals();
+    await getSavedMeals();
   };
 
   const getMealById = (id: string) => {
