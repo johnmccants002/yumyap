@@ -3,9 +3,11 @@
 # dependencies
 node_modules/
 
+
 # Expo
 .expo/
 dist/
+ios/
 web-build/
 .env
 
@@ -41,3 +43,4 @@ yarn-error.*
 expo-env.d.ts
 # @end expo-cli
 .vercel
+

@@ -14,6 +14,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { saveRecipe } from "@/services/recipeService";
 import useAuth from "./hooks/useAuth";
 import { fetchImages } from "@/services/photoService";
+import { useSavedMeals } from "./providers/SavedProvider";
 
 const ResultDisplay = (props: {
   recipe: Recipe | null;
@@ -24,6 +25,7 @@ const ResultDisplay = (props: {
   const [saved, setSaved] = useState(false);
   const [imageUrl, setImageUrl] = useState(null);
   const [imageLoading, setImageLoading] = useState(true);
+  const { refreshMeals } = useSavedMeals();
 
   useEffect(() => {
     if (recipe && recipe.name) {
@@ -47,6 +49,7 @@ const ResultDisplay = (props: {
     const args = { recipe: updatedRecipe, userId: user.user.id, token: token };
     try {
       await saveRecipe(args);
+      refreshMeals();
       setSaved(true);
     } catch (err) {
       console.log("Unable to save the recipe", err);

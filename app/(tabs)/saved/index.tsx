@@ -6,6 +6,7 @@ import React, { useEffect } from "react";
 import {
   ActivityIndicator,
   Alert,
+  Image,
   Pressable,
   SectionList,
   StyleSheet,
@@ -114,8 +115,32 @@ const Index: React.FC = () => {
 
   if (!savedMeals || savedMeals.length === 0) {
     return (
-      <View style={styles.container}>
-        <Text>No savedMeals found.</Text>
+      <View
+        style={{
+          alignItems: "center",
+          justifyContent: "center",
+          flex: 1,
+          paddingHorizontal: 60,
+          gap: 20,
+          backgroundColor: colors.whiteBlack["50"],
+        }}
+      >
+        <Image source={require("@/assets/images/EmptySaved.png")} />
+        <Text
+          style={{ textAlign: "center", fontFamily: "Zodiak", fontSize: 32 }}
+        >
+          No Yummy Food Saved For Later
+        </Text>
+        <Text
+          style={{
+            textAlign: "center",
+            fontFamily: "JakartaRegular",
+            fontSize: 16,
+            color: colors.neutral["600"],
+          }}
+        >
+          Saved recipes will show here
+        </Text>
       </View>
     );
   }

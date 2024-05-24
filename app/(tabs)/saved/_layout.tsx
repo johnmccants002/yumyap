@@ -11,35 +11,33 @@ type Props = {};
 const Layout = (props: Props) => {
   const router = useRouter();
   return (
-    <SavedProvider>
-      <Stack>
-        <Stack.Screen
-          name="index"
-          options={{
-            headerTitle: () => <></>,
-            headerLeft: () => (
-              <View style={{ marginLeft: 20 }}>
-                <Text
-                  style={{
-                    fontSize: 34,
-                    fontFamily: "SFProTextSemibold",
-                    color: colors.whiteBlack["100"],
-                  }}
-                >
-                  Saved
-                </Text>
-              </View>
-            ),
-          }}
-        />
-        <Stack.Screen
-          name="[detail]"
-          options={{
-            headerBackTitleVisible: false,
-          }}
-        />
-      </Stack>
-    </SavedProvider>
+    <Stack>
+      <Stack.Screen
+        name="index"
+        options={{
+          headerTitle: () => <></>,
+          headerLeft: () => (
+            <View style={{ marginLeft: 20 }}>
+              <Text
+                style={{
+                  fontSize: 34,
+                  fontFamily: "SFProTextSemibold",
+                  color: colors.whiteBlack["100"],
+                }}
+              >
+                Saved
+              </Text>
+            </View>
+          ),
+        }}
+      />
+      <Stack.Screen
+        name="[detail]"
+        options={{
+          headerBackTitleVisible: false,
+        }}
+      />
+    </Stack>
   );
 };
 
