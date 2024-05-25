@@ -23,7 +23,7 @@ const ResultDisplay = (props: {
   const { recipe, dismiss } = props;
   const { user, token } = useAuth();
   const [saved, setSaved] = useState(false);
-  const [imageUrl, setImageUrl] = useState(null);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [imageLoading, setImageLoading] = useState(true);
   const { refreshMeals } = useSavedMeals();
 
@@ -38,6 +38,8 @@ const ResultDisplay = (props: {
         })
         .catch((error) => {
           console.error("Error fetching images:", error);
+          setImageLoading(false);
+          setImageUrl("");
         });
     }
   }, [recipe]);
@@ -58,7 +60,10 @@ const ResultDisplay = (props: {
   if (!recipe) return <></>;
   return (
     <>
-      <ScrollView style={styles.container}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{ paddingBottom: 80 }}
+      >
         <View
           style={{
             flexDirection: "row",

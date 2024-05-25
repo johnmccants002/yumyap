@@ -14,6 +14,8 @@ import {
   TextInput,
   View,
   useWindowDimensions,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 type Props = {};
 
@@ -63,57 +65,63 @@ const Page = (props: Props) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      // keyboardVerticalOffset={80}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <Text style={styles.title}>Create Account</Text>
-      <View
-        style={{ width: width, padding: 8, gap: 20, paddingHorizontal: 20 }}
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        // keyboardVerticalOffset={80}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <View style={{ gap: 12 }}>
-          <Text style={{ fontFamily: "JakartaRegular", fontSize: 16 }}>
-            Email
-          </Text>
-          <TextInput
-            style={styles.input}
-            placeholder="Enter email..."
-            placeholderTextColor={colors.neutral["300"]}
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-          />
-        </View>
-        <View style={{ gap: 12 }}>
-          <Text style={{ fontFamily: "JakartaRegular", fontSize: 16 }}>
-            Password
-          </Text>
-          <TextInput
-            style={styles.input}
-            secureTextEntry={true}
-            placeholder="Enter password..."
-            placeholderTextColor={colors.neutral["300"]}
-            value={password}
-            onChangeText={(text) => setPassword(text)}
-          />
-        </View>
-      </View>
-      {errorMessage ? (
-        <Text style={styles.errorText}>{errorMessage}</Text>
-      ) : null}
-      <View style={styles.buttonContainer}>
-        <Pressable
-          style={styles.button}
-          onPress={handleSignup}
-          disabled={isLoading}
+        <Text style={styles.title}>Create Account</Text>
+        <View
+          style={{ width: width, padding: 8, gap: 20, paddingHorizontal: 20 }}
         >
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </Pressable>
-      </View>
-      {isLoading && (
-        <ActivityIndicator size="large" color={colors.primary["700"]} />
-      )}
-    </KeyboardAvoidingView>
+          <View style={{ gap: 12 }}>
+            <Text style={{ fontFamily: "JakartaRegular", fontSize: 16 }}>
+              Email
+            </Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Enter email..."
+              placeholderTextColor={colors.neutral["300"]}
+              value={email}
+              onChangeText={(text) => setEmail(text)}
+              autoComplete="email"
+              textContentType="oneTimeCode"
+            />
+          </View>
+          <View style={{ gap: 12 }}>
+            <Text style={{ fontFamily: "JakartaRegular", fontSize: 16 }}>
+              Password
+            </Text>
+            <TextInput
+              style={styles.input}
+              secureTextEntry={true}
+              placeholder="Enter password..."
+              placeholderTextColor={colors.neutral["300"]}
+              value={password}
+              onChangeText={(text) => setPassword(text)}
+              autoComplete="password"
+              textContentType="oneTimeCode"
+            />
+          </View>
+        </View>
+        {errorMessage ? (
+          <Text style={styles.errorText}>{errorMessage}</Text>
+        ) : null}
+        <View style={styles.buttonContainer}>
+          <Pressable
+            style={styles.button}
+            onPress={handleSignup}
+            disabled={isLoading}
+          >
+            <Text style={styles.buttonText}>Sign Up</Text>
+          </Pressable>
+        </View>
+        {isLoading && (
+          <ActivityIndicator size="large" color={colors.primary["700"]} />
+        )}
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 };
 
