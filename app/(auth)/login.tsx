@@ -8,12 +8,14 @@ import {
   ActivityIndicator,
   Alert,
   Image,
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
   Pressable,
   StyleSheet,
   Text,
   TextInput,
+  TouchableWithoutFeedback,
   View,
   useWindowDimensions,
 } from "react-native";
@@ -53,83 +55,86 @@ const Page = (props: Props) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={styles.container}
-      // keyboardVerticalOffset={80}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-    >
-      <View
-        style={{
-          flexGrow: 1,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+      <KeyboardAvoidingView
+        style={styles.container}
+        // keyboardVerticalOffset={80}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
-        <Image
-          source={require("@/assets/images/YumYap.png")}
-          style={[styles.logo, { width: width / 2 }]}
-        />
-        <Text style={styles.description}>
-          Simplifies cooking by magically transforming your cravings into
-          detailed recipes.
-        </Text>
-      </View>
-
-      <View
-        style={[
-          styles.card,
-          {
-            width: width,
+        <View
+          style={{
             flexGrow: 1,
-          },
-        ]}
-      >
-        <View style={{ width: width, padding: 8, gap: 20 }}>
-          <View>
-            <Text style={styles.text}>Email</Text>
-            <TextInput
-              style={styles.input}
-              placeholder="Enter email..."
-              placeholderTextColor={colors.neutral["300"]}
-              value={email}
-              onChangeText={(text) => setEmail(text)}
-            />
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Image
+            source={require("@/assets/images/YumYap.png")}
+            style={[styles.logo, { width: width / 2 }]}
+          />
+          <Text style={styles.description}>
+            Simplifies cooking by magically transforming your cravings into
+            detailed recipes.
+          </Text>
+        </View>
+
+        <View
+          style={[
+            styles.card,
+            {
+              width: width,
+              flexGrow: 1,
+            },
+          ]}
+        >
+          <View style={{ width: width, padding: 8, gap: 20 }}>
+            <View>
+              <Text style={styles.text}>Email</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Enter email..."
+                placeholderTextColor={colors.neutral["300"]}
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+                textContentType="oneTimeCode"
+              />
+            </View>
+            <View>
+              <Text style={styles.text}>Password</Text>
+              <TextInput
+                secureTextEntry={true}
+                style={styles.input}
+                placeholder="Enter password..."
+                placeholderTextColor={colors.neutral["300"]}
+                value={password}
+                onChangeText={(text) => setPassword(text)}
+              />
+            </View>
           </View>
-          <View>
-            <Text style={styles.text}>Password</Text>
-            <TextInput
-              secureTextEntry={true}
-              style={styles.input}
-              placeholder="Enter password..."
-              placeholderTextColor={colors.neutral["300"]}
-              value={password}
-              onChangeText={(text) => setPassword(text)}
-            />
+          <View style={{ width: "100%", alignItems: "center" }}>
+            <Pressable style={styles.button} onPress={loginPressed}>
+              <Text style={styles.buttonText}>Login</Text>
+            </Pressable>
+            <Pressable
+              style={styles.signUp}
+              onPress={() => router.push("/(auth)/signup")}
+            >
+              <Text style={styles.signUpText}>
+                Don't have an account?{" "}
+                <Text style={styles.signUpLink}>Sign Up</Text>
+              </Text>
+            </Pressable>
           </View>
         </View>
-        <View style={{ width: "100%", alignItems: "center" }}>
-          <Pressable style={styles.button} onPress={loginPressed}>
-            <Text style={styles.buttonText}>Login</Text>
-          </Pressable>
-          <Pressable
-            style={styles.signUp}
-            onPress={() => router.push("/(auth)/signup")}
-          >
-            <Text style={styles.signUpText}>
-              Don't have an account?{" "}
-              <Text style={styles.signUpLink}>Sign Up</Text>
-            </Text>
-          </Pressable>
-        </View>
-      </View>
-      {loading && (
-        <ActivityIndicator
-          style={{ position: "absolute", top: height / 2, left: width / 2 }}
-          size="large"
-          color={colors.primary["700"]}
-        />
-      )}
-    </KeyboardAvoidingView>
+        {loading && (
+          <ActivityIndicator
+            style={{ position: "absolute", top: height / 2, left: width / 2 }}
+            size="large"
+            color={colors.primary["700"]}
+          />
+        )}
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 };
 
