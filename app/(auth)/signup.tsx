@@ -15,6 +15,7 @@ import {
   View,
   useWindowDimensions,
   TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 type Props = {};
 
