@@ -45,6 +45,7 @@ const ResultDisplay = (props: {
   }, [recipe]);
 
   const saveUserRecipe = async () => {
+    console.log(recipe, "this is the token", token);
     if (!recipe || !token) return;
 
     const updatedRecipe = { ...recipe, image: imageUrl ? imageUrl : "" };
@@ -85,6 +86,8 @@ const ResultDisplay = (props: {
           </Pressable>
           <Pressable
             onPress={() => {
+              console.log("SAVING USER RECIPE");
+
               saveUserRecipe();
             }}
             style={{
@@ -92,6 +95,8 @@ const ResultDisplay = (props: {
               top: 0,
               flexDirection: "row",
               alignItems: "center",
+
+              width: "auto",
             }}
           >
             <Text>Save Recipe</Text>

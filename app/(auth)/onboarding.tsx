@@ -64,7 +64,7 @@ const Page = (props: Props) => {
       flatListRef.current?.scrollToIndex({ index: nextIndex, animated: true });
     } else {
       setIsOnboarded("true");
-      router.push("/(auth)/login");
+      router.push("/(auth)/welcome");
     }
   };
 
