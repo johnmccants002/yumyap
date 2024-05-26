@@ -1,6 +1,6 @@
 import { colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   useWindowDimensions,
@@ -8,6 +8,7 @@ import {
   Text,
   TextInput,
   Pressable,
+  Image,
 } from "react-native";
 
 type Props = {};
@@ -15,6 +16,16 @@ type Props = {};
 const ForgotPassword = (props: Props) => {
   const { width, height } = useWindowDimensions();
   const router = useRouter();
+  const [linkSent, setLinkSet] = useState(false);
+  const [email, setEmail] = useState("test@gmail.com");
+  const buttonPressed = () => {
+    if (linkSent) {
+      setLinkSet(false);
+      router.back();
+    } else {
+      setLinkSet(true);
+    }
+  };
   return (
     <View
       style={{
@@ -24,35 +35,53 @@ const ForgotPassword = (props: Props) => {
         paddingVertical: 40,
       }}
     >
-      <View style={{ flex: 1, justifyContent: "center", gap: 20 }}>
-        <View style={{ width: width, paddingHorizontal: 12, gap: 8 }}>
-          <Text style={styles.title}>Let's Help You Get Back To Us</Text>
-          <Text style={styles.description}>
-            Let's help you reset your password
-          </Text>
-        </View>
+      {linkSent ? (
         <View
           style={{
-            borderColor: colors.neutral["200"],
-            borderWidth: 1,
-            height: 100,
-            width: width * 0.9,
-            alignSelf: "center",
-            borderRadius: 16,
+            flex: 1,
             justifyContent: "center",
-            paddingHorizontal: 12,
+            alignItems: "center",
+
             gap: 12,
           }}
         >
-          <Text>Email Address</Text>
-          <TextInput placeholder="hello@yumyap.co" />
+          <Image source={require("@/assets/images/envelope.png")} />
+          <Text style={styles.title}>Link Has Been Sent</Text>
+          <Text style={styles.description}>
+            We have sent an email to {email} with instructions to reset your
+            password.
+          </Text>
         </View>
-      </View>
-      <Pressable
-        style={styles.button}
-        onPress={() => router.push("/(auth)/signup")}
-      >
-        <Text style={styles.buttonText}>Continue</Text>
+      ) : (
+        <View style={{ flex: 1, justifyContent: "center", gap: 20 }}>
+          <View style={{ width: width, paddingHorizontal: 12, gap: 8 }}>
+            <Text style={styles.title}>Let's Help You Get Back To Us</Text>
+            <Text style={styles.description}>
+              Let's help you reset your password
+            </Text>
+          </View>
+          <View
+            style={{
+              borderColor: colors.neutral["200"],
+              borderWidth: 1,
+              height: 100,
+              width: width * 0.9,
+              alignSelf: "center",
+              borderRadius: 16,
+              justifyContent: "center",
+              paddingHorizontal: 12,
+              gap: 12,
+            }}
+          >
+            <Text>Email Address</Text>
+            <TextInput placeholder="hello@yumyap.co" />
+          </View>
+        </View>
+      )}
+      <Pressable style={styles.button} onPress={buttonPressed}>
+        <Text style={styles.buttonText}>
+          {linkSent ? "Back to log in" : "Continue"}
+        </Text>
       </Pressable>
     </View>
   );
@@ -84,7 +113,7 @@ const styles = StyleSheet.create({
     textAlign: "left",
     fontFamily: "Zodiak",
     marginHorizontal: 20,
-    maxWidth: 300,
+    maxWidth: 400,
   },
   description: {
     fontSize: 16,
@@ -93,6 +122,7 @@ const styles = StyleSheet.create({
     fontFamily: "JakartaRegular",
     color: colors.neutral["700"],
   },
+  linkTitle: {},
 });
 
 export default ForgotPassword;
