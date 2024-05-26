@@ -38,6 +38,7 @@ const WelcomeScreen = (props: Props) => {
 
           alignItems: "center",
           gap: 20,
+          paddingTop: 20,
         }}
       >
         <View style={{ width: width, paddingHorizontal: 12, gap: 8 }}>
