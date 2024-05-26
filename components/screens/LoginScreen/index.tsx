@@ -76,7 +76,7 @@ const LoginScreen = (props: Props) => {
               </Pressable>
             </View>
           </View>
-          <Pressable onPress={() => router.push("/(auth)/login")}>
+          <Pressable onPress={() => router.push("/(auth)/forgot-password")}>
             <Text
               style={{
                 textDecorationLine: "underline",

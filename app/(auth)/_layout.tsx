@@ -27,6 +27,13 @@ const Layout = (props: Props) => {
           headerBackVisible: false,
         }}
       />
+      <Stack.Screen
+        name="forgot-password"
+        options={{
+          headerTransparent: true,
+          headerTitle: "",
+        }}
+      />
     </Stack>
   );
 };
