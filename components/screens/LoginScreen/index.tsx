@@ -1,23 +1,13 @@
-import useAuth from "@/components/hooks/useAuth";
-import useLocalStorage from "@/components/hooks/useLocalStorage";
 import { colors } from "@/constants/Colors";
-import { login } from "@/services/authService";
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React from "react";
 import {
-  ActivityIndicator,
-  Alert,
-  Image,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableWithoutFeedback,
   View,
+  Text,
+  Pressable,
+  TextInput,
   useWindowDimensions,
+  StyleSheet,
 } from "react-native";
 
 type Props = {};
@@ -25,160 +15,109 @@ type Props = {};
 const LoginScreen = (props: Props) => {
   const { width, height } = useWindowDimensions();
   const router = useRouter();
-  const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const { decode, setToken } = useAuth();
-
-  const loginPressed = async () => {
-    if (loading) return;
-    setLoading(true);
-
-    const credentials = {
-      email,
-      password,
-    };
-
-    try {
-      const result = await login(credentials);
-      setToken(result);
-      decode(result);
-
-      router.replace("/");
-    } catch (err) {
-      console.log("Error Logging in ", err);
-      Alert.alert(`Error Logging in, ${err}`);
-      throw err;
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <KeyboardAvoidingView
-        style={styles.container}
-        // keyboardVerticalOffset={80}
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+    <View
+      style={{ flex: 1, justifyContent: "space-between", paddingVertical: 60 }}
+    >
+      <View
+        style={{
+          height: height * 0.5,
+          justifyContent: "center",
+          gap: 40,
+          marginTop: 40,
+        }}
       >
-        <View
-          style={{
-            flexGrow: 1,
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Image
-            source={require("@/assets/images/YumYap.png")}
-            style={[styles.logo, { width: width / 2 }]}
-          />
-          <Text style={styles.description}>
-            Simplifies cooking by magically transforming your cravings into
-            detailed recipes.
-          </Text>
+        <View style={{ gap: 16 }}>
+          <Text style={styles.title}>Let's Login To Your Account</Text>
+          <Text style={styles.description}>To access all the features.</Text>
         </View>
-
-        <View
-          style={[
-            styles.card,
-            {
-              width: width,
-              flexGrow: 1,
-            },
-          ]}
-        >
-          <View style={{ width: width, padding: 8, gap: 20 }}>
-            <View>
-              <Text style={styles.text}>Email</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Enter email..."
-                placeholderTextColor={colors.neutral["300"]}
-                value={email}
-                onChangeText={(text) => setEmail(text)}
-                textContentType="oneTimeCode"
-              />
-            </View>
-            <View>
-              <Text style={styles.text}>Password</Text>
-              <TextInput
-                secureTextEntry={true}
-                style={styles.input}
-                placeholder="Enter password..."
-                placeholderTextColor={colors.neutral["300"]}
-                value={password}
-                onChangeText={(text) => setPassword(text)}
-              />
-            </View>
+        <View style={{ gap: 20 }}>
+          <View
+            style={{
+              borderColor: colors.neutral["200"],
+              borderWidth: 1,
+              height: 100,
+              width: width * 0.9,
+              alignSelf: "center",
+              borderRadius: 16,
+              justifyContent: "center",
+              paddingHorizontal: 12,
+              gap: 12,
+            }}
+          >
+            <Text>Email Address</Text>
+            <TextInput placeholder="hello@yumyap.co" />
           </View>
-          <View style={{ width: "100%", alignItems: "center" }}>
-            <Pressable style={styles.button} onPress={loginPressed}>
-              <Text style={styles.buttonText}>Login</Text>
-            </Pressable>
-            <Pressable
-              style={styles.signUp}
-              onPress={() => router.push("/(auth)/signup")}
+          <View
+            style={{
+              borderColor: colors.neutral["200"],
+              borderWidth: 1,
+              height: 100,
+              width: width * 0.9,
+              alignSelf: "center",
+              borderRadius: 16,
+              justifyContent: "center",
+              paddingHorizontal: 12,
+              gap: 12,
+            }}
+          >
+            <Text>Password</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                alignItems: "center",
+                paddingRight: 12,
+              }}
             >
-              <Text style={styles.signUpText}>
-                Don't have an account?{" "}
-                <Text style={styles.signUpLink}>Sign Up</Text>
-              </Text>
-            </Pressable>
+              <TextInput placeholder="**********" />
+              <Pressable>
+                <Text>Show</Text>
+              </Pressable>
+            </View>
           </View>
+          <Pressable onPress={() => router.push("/(auth)/login")}>
+            <Text
+              style={{
+                textDecorationLine: "underline",
+                fontSize: 16,
+                lineHeight: 24,
+                fontFamily: "Inter",
+                alignSelf: "flex-end",
+                paddingRight: 20,
+              }}
+            >
+              Forgot Password?
+            </Text>
+          </Pressable>
         </View>
-        {loading && (
-          <ActivityIndicator
-            style={{ position: "absolute", top: height / 2, left: width / 2 }}
-            size="large"
-            color={colors.primary["700"]}
-          />
-        )}
-      </KeyboardAvoidingView>
-    </TouchableWithoutFeedback>
+      </View>
+
+      <View style={{ gap: 12, width: width, alignItems: "center" }}>
+        <Pressable
+          style={styles.button}
+          onPress={() => router.push("/(auth)/signup")}
+        >
+          <Text style={styles.buttonText}>Log In</Text>
+        </Pressable>
+        <Pressable onPress={() => router.push("/(auth)/login")}>
+          <Text
+            style={{
+              textDecorationLine: "underline",
+              fontSize: 16,
+              lineHeight: 24,
+              fontFamily: "Inter",
+            }}
+          >
+            Don't have an account?
+          </Text>
+        </Pressable>
+      </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.primary["100"],
-    justifyContent: "flex-start",
-  },
-  logo: {
-    resizeMode: "contain",
-    alignSelf: "center",
-  },
-  description: {
-    fontSize: 16,
-    textAlign: "center",
-    marginVertical: 20,
-    color: colors.neutral["800"],
-    paddingHorizontal: 20,
-    fontFamily: "JakartaRegular",
-  },
-  text: {
-    fontSize: 16,
-    color: colors.neutral["800"],
-
-    fontFamily: "JakartaMedium",
-  },
-  card: {
-    backgroundColor: colors.neutral["50"],
-    borderTopLeftRadius: 40,
-    borderTopRightRadius: 40,
-    padding: 20,
-  },
-  input: {
-    width: "90%",
-    height: 50,
-    marginVertical: 10,
-    borderWidth: 1,
-    borderColor: colors.neutral["300"],
-    borderRadius: 10,
-    paddingLeft: 12,
-
-    backgroundColor: colors.neutral["200"],
-  },
   button: {
     width: "90%",
     height: 60,
@@ -193,16 +132,25 @@ const styles = StyleSheet.create({
     fontFamily: "InterSemibold",
     fontSize: 16,
   },
-  signUp: {
-    marginTop: 15,
+  logo: {
+    resizeMode: "contain",
+    alignSelf: "center",
   },
-  signUpText: {
-    color: colors.neutral["600"],
-    fontFamily: "JakartaMedium",
-  },
-  signUpLink: {
-    color: colors.primary["700"],
+  title: {
+    fontSize: 32,
     fontWeight: "bold",
+    marginTop: 20,
+    textAlign: "left",
+    fontFamily: "Zodiak",
+    marginHorizontal: 20,
+    maxWidth: 300,
+  },
+  description: {
+    fontSize: 16,
+    textAlign: "left",
+    marginHorizontal: 20,
+    fontFamily: "JakartaRegular",
+    color: colors.neutral["700"],
   },
 });
 
