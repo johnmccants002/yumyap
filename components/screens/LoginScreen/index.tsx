@@ -15,6 +15,7 @@ type Props = {};
 const LoginScreen = (props: Props) => {
   const { width, height } = useWindowDimensions();
   const router = useRouter();
+
   return (
     <View
       style={{ flex: 1, justifyContent: "space-between", paddingVertical: 60 }}
@@ -100,7 +101,7 @@ const LoginScreen = (props: Props) => {
         >
           <Text style={styles.buttonText}>Log In</Text>
         </Pressable>
-        <Pressable onPress={() => router.push("/(auth)/login")}>
+        <Pressable onPress={() => router.push("/(auth)/signup")}>
           <Text
             style={{
               textDecorationLine: "underline",
