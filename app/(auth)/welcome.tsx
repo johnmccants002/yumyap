@@ -1,10 +1,10 @@
-import LoginScreen from "@/components/screens/LoginScreen";
+import WelcomeScreen from "@/components/screens/WelcomeScreen";
 import React from "react";
 
 type Props = {};
 
 const Page = (props: Props) => {
-  return <LoginScreen />;
+  return <WelcomeScreen />;
 };
 
 export default Page;

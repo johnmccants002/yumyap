@@ -60,10 +60,14 @@ const useLocalStorage = (
           },
         };
 
-  const setValue: SetValue = (key, value) => {
+  const setValue: SetValue = async (key, value) => {
     const newValue = { ...values, [key]: value };
     setValues(newValue);
-    storage.setItem(key, JSON.stringify(value));
+    try {
+      await storage.setItem(key, JSON.stringify(value));
+    } catch {
+      console.log("UNABLE TO SET VALUE");
+    }
   };
 
   return [values, setValue, loaded];
